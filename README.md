@@ -98,7 +98,6 @@ mailed to `admin@ondralinek.cz`.
 
 * `www.ondralinek.cz` now serves this landing page too (same content, canonical
   to the apex). The personal site stays at `me.ondralinek.cz`.
-* The apex currently has an `AAAA` record pointing at GitHub Pages. It must be
-  changed to `2a01:4f8:c016:e828::1` before `enable-tls.sh` will run — see
-  [deploy/DEPLOY.md](deploy/DEPLOY.md).
+* The apex AAAA must point at `2a01:4f8:c016:e828::1` (or be absent). It used to
+  point at GitHub Pages, which breaks Let's Encrypt validation over IPv6.
 * The TLS certificate covers both `ondralinek.cz` and `www.ondralinek.cz`.

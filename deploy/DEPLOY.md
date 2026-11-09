@@ -28,13 +28,13 @@ before TLS can work:
 |---|---|---|---|
 | A | ondralinek.cz | `2.31.33.21` | already correct |
 | A | www.ondralinek.cz | `2.31.33.21` | already correct |
-| AAAA | ondralinek.cz | `2a01:4f8:c016:e828::1` | **currently `2606:50c0:8000::153` (GitHub Pages) — change it** |
+| AAAA | ondralinek.cz | `2a01:4f8:c016:e828::1` | must point here; the old GitHub Pages value broke validation |
 | AAAA | www.ondralinek.cz | `2a01:4f8:c016:e828::1` | optional; no AAAA is also fine |
 
-Let's Encrypt prefers AAAA, so leaving the GitHub Pages AAAA in place makes
-webroot validation fail even though IPv4 is correct. `enable-tls.sh` refuses to
-run while the records disagree with the server; for a staging-only check use
-`SKIP_DNS_CHECK=1 ./deploy/enable-tls.sh --dry-run`.
+Let's Encrypt prefers AAAA, so a wrong AAAA (the old GitHub Pages value
+`2606:50c0:8000::153`) makes webroot validation fail even though IPv4 is correct.
+`enable-tls.sh` refuses to run while the records disagree with the server; for a
+staging-only check use `SKIP_DNS_CHECK=1 ./deploy/enable-tls.sh --dry-run`.
 
 `www.ondralinek.cz` used to 301 to `me.ondralinek.cz`. The personal site's vhost
 (and its certificate) must be updated to `me.ondralinek.cz` only — the current
