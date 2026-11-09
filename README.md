@@ -75,6 +75,13 @@ BASIC interpreter with `PRINT`, `LET`, `IF/THEN/ELSE`, `FOR/NEXT`, `GOTO`,
 program). `SHELL` or Escape returns to the console. BASIC keywords stay English
 on both language versions, as they were on the original machine.
 
+The shell's project commands are available in BASIC too: `SITES`, `APPS`,
+`TOOLS`, `GOTO SITES/APPS/TOOLS`, `GOTO <name>`, `CAT <name>`, `WHOAMI`,
+`ABOUT`, `CONTACT`, `GITHUB`, `CV`, `LS` and `TREE`. `OPEN <name>` or `OPEN <n>`
+(from the last list) opens the site/app/tool in a new tab; `GOTO <name>` shows
+its details on the Spectrum screen, and `GOTO <n>` selects from the last list
+when no BASIC line with that number exists.
+
 ## Structure
 
 ```

@@ -40,6 +40,86 @@
     'INT', 'ABS', 'SGN', 'SQR', 'SIN', 'COS', 'TAN', 'ATN', 'EXP', 'LN',
     'LEN', 'VAL', 'CHR$', 'CODE', 'STR$', 'PEEK',
   ]);
+  const NAV_TOPICS = new Set([
+    'SITES', 'APPS', 'TOOLS', 'WHOAMI', 'ABOUT', 'CONTACT', 'GITHUB', 'CV',
+    'HELP', 'SHELL',
+  ]);
+
+  const TEXT = {
+    en: {
+      whoami: 'Ondra Linek — engineer. I build Go backends and native apps for Apple platforms, and I stay responsible for the result from idea to production.',
+      about: [
+        'I am a software engineer from Czechia. The last decade has been Go backends — internal platforms, onboarding, billing, support tooling and automation — and Apple apps in my own time.',
+        'I take systems from idea to production and stay responsible for them: architecture, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job.',
+      ],
+      contactNote: 'Open to collaboration, new projects and ideas worth building.',
+      openHint: 'GOTO/OPEN <N> OR OPEN <NAME>',
+      notFound: (query) => `NOT FOUND: ${query}`,
+      multiple: 'MULTIPLE MATCHES',
+      opening: (url) => `OPENING ${url}`,
+      noLink: (name) => `NO LINK FOR ${name}`,
+      usageOpen: 'USAGE: OPEN <NAME> OR OPEN <N>',
+      usageCat: 'USAGE: CAT <NAME>',
+      specific: 'BE MORE SPECIFIC',
+      visit: (name) => `OPEN ${name} TO VISIT`,
+      ls: ['SITES/  APPS/  TOOLS/', 'ABOUT  CONTACT  README', 'GOTO SITES TO START'],
+    },
+    cs: {
+      whoami: 'Ondra Linek — inženýr. Stavím Go backendy a nativní aplikace pro platformy Apple a zůstávám odpovědný za výsledek od nápadu po provoz.',
+      about: [
+        'Jsem softwarový inženýr z Česka. Posledních deset let stavím backendy v Go — interní platformy, onboarding, billing, podpůrné nástroje a automatizaci — a ve volném čase nativní aplikace pro platformy Apple.',
+        'Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce.',
+      ],
+      contactNote: 'Otevřený spolupráci, novým projektům a nápadům, které stojí za to postavit.',
+      openHint: 'GOTO/OPEN <N> NEBO OPEN <JMENO>',
+      notFound: (query) => `NENALEZENO: ${query}`,
+      multiple: 'VICE SHOD',
+      opening: (url) => `OTEVIRAM ${url}`,
+      noLink: (name) => `BEZ ODKAZU: ${name}`,
+      usageOpen: 'POUZITI: OPEN <JMENO> NEBO OPEN <N>',
+      usageCat: 'POUZITI: CAT <JMENO>',
+      specific: 'UPŘESNĚTE',
+      visit: (name) => `OPEN ${name} PRO OTEVRENI`,
+      ls: ['SITES/  APPS/  TOOLS/', 'ABOUT  CONTACT  README', 'GOTO SITES TO START'],
+    },
+  };
+  const T = TEXT[lang];
+
+  const PROJECTS = [];
+  (data.sites || []).forEach((site) => {
+    PROJECTS.push({
+      kind: 'SITE',
+      key: site.domain,
+      label: site.domain,
+      name: site.name,
+      url: site.url,
+      keys: [site.domain, site.name, site.url].filter(Boolean),
+      lines: [site.domain, site.desc].filter(Boolean),
+    });
+  });
+  (data.apps || []).forEach((app) => {
+    const url = app.site || app.store || (app.repo ? `https://github.com/${app.repo}` : '');
+    PROJECTS.push({
+      kind: 'APP',
+      key: app.name,
+      label: app.name,
+      name: app.name,
+      url,
+      keys: [app.id, app.name, app.site, app.repo, app.store].filter(Boolean),
+      lines: [app.platforms, app.tagline, app.summary].filter(Boolean),
+    });
+  });
+  (data.tools || []).forEach((tool) => {
+    PROJECTS.push({
+      kind: 'TOOL',
+      key: tool.name,
+      label: tool.name,
+      name: tool.name,
+      url: tool.repo ? `https://github.com/${tool.repo}` : '',
+      keys: [tool.name, tool.repo].filter(Boolean),
+      lines: [tool.lang, tool.desc].filter(Boolean),
+    });
+  });
 
   const cellEls = [];
   for (let i = 0; i < COLS * ROWS; i += 1) {
@@ -60,6 +140,7 @@
   let awaiting = null;
   let booted = false;
   let lastPlot = { x: 0, y: 0 };
+  let lastList = [];
   let zxHistory = [];
   let zxHistIndex = 0;
 
@@ -221,6 +302,10 @@
 
   function printLine(text, style) {
     printText(text, style, { newline: true });
+  }
+
+  function blankZXLine() {
+    printLine('', attrs);
   }
 
   // --------------------------------------------------------- palette
@@ -407,11 +492,13 @@
     printAt(4, 5, 'BASIC', { ink: 5, bright: 1 });
     printAt(0, 8, 'TYPE HELP FOR BASIC COMMANDS', { ink: WHITE });
     printAt(0, 9, 'LIST  RUN  NEW  CLS', { ink: WHITE });
+    printAt(0, 10, 'GOTO SITES  APPS  TOOLS', { ink: 5 });
     printAt(0, 11, '10 PRINT "HELLO FROM 1982"', { ink: 6 });
     printAt(0, 12, '20 STOP', { ink: 6 });
     printAt(0, 14, 'LOAD "" FOR THE DEMO', { ink: 5 });
     printAt(0, 15, 'SHELL  RETURN TO CONSOLE', { ink: 7 });
-    cursor = { x: 0, y: 17 };
+    printAt(0, 16, 'OPEN <NAME> TO VISIT', { ink: 6 });
+    cursor = { x: 0, y: 18 };
     renderPrompt();
     input.value = '';
     renderInput();
@@ -776,6 +863,217 @@
     }
   }
 
+  function normalizeQuery(value) {
+    return String(value || '').toLowerCase().replace(/^["']|["']$/g, '').replace(/\/+$/, '').trim();
+  }
+
+  function findProjects(query) {
+    const term = normalizeQuery(query);
+    if (!term || /^\d+$/.test(term)) return [];
+    const exact = PROJECTS.filter((project) => project.keys.some((key) => normalizeQuery(key) === term));
+    if (exact.length) return exact;
+    return PROJECTS.filter((project) => project.keys.some((key) => normalizeQuery(key).includes(term)));
+  }
+
+  function showMatches(matches) {
+    lastList = matches;
+    clearScreen();
+    printLine(T.multiple, { ink: 6, bright: 1 });
+    matches.slice(0, 10).forEach((project, index) => {
+      printLine(`${index + 1} ${project.label.toUpperCase()}`, attrs);
+    });
+    printLine(T.specific, { ink: 5 });
+    printLine(T.openHint, { ink: 5 });
+  }
+
+  function showList(kind) {
+    const list = PROJECTS.filter((project) => project.kind === kind);
+    lastList = list;
+    clearScreen();
+    printLine(`${kind}S`, { ink: 6, bright: 1 });
+    list.forEach((project, index) => {
+      printLine(`${index + 1} ${project.label.toUpperCase()}`, attrs);
+    });
+    blankZXLine();
+    printLine(T.openHint, { ink: 5 });
+  }
+
+  function showProject(query) {
+    const matches = findProjects(query);
+    if (!matches.length) {
+      zxError(T.notFound(query));
+      return;
+    }
+    if (matches.length > 1) {
+      showMatches(matches);
+      return;
+    }
+    const project = matches[0];
+    lastList = [project];
+    clearScreen();
+    printLine(project.name.toUpperCase(), { ink: 6, bright: 1 });
+    printLine(project.kind, { ink: 5 });
+    project.lines.forEach((text) => printLine(text, attrs));
+    if (project.url) printLine(project.url, { ink: 5 });
+    printLine(T.visit(project.label.toUpperCase()), { ink: 6 });
+  }
+
+  function openUrl(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  function showOpen(query) {
+    const text = String(query || '').trim();
+    if (!text) {
+      zxError(T.usageOpen);
+      return;
+    }
+    let matches = [];
+    if (/^\d+$/.test(text) && lastList.length) {
+      const index = Number(text) - 1;
+      if (index >= 0 && index < lastList.length) matches = [lastList[index]];
+    }
+    if (!matches.length) matches = findProjects(text);
+    if (!matches.length) {
+      zxError(T.notFound(text));
+      return;
+    }
+    if (matches.length > 1) {
+      showMatches(matches);
+      return;
+    }
+    const project = matches[0];
+    if (!project.url) {
+      zxError(T.noLink(project.label));
+      return;
+    }
+    printLine(T.opening(project.url), { ink: 5 });
+    printLine(`OPEN ${project.label.toUpperCase()}`, attrs);
+    openUrl(project.url);
+  }
+
+  function showWhoami(full) {
+    clearScreen();
+    printLine('ONDRA LINEK', { ink: 6, bright: 1 });
+    printLine(T.whoami, attrs);
+    blankZXLine();
+    if (full) {
+      T.about.forEach((paragraph) => {
+        printLine(paragraph, attrs);
+        blankZXLine();
+      });
+    }
+    printLine('STACK  GO · SQL · CLOUD · LLM', { ink: 5 });
+  }
+
+  function showContact() {
+    const links = data.links || {};
+    clearScreen();
+    printLine('CONTACT', { ink: 6, bright: 1 });
+    if (links.email) printLine(`EMAIL   ${links.email}`, attrs);
+    if (links.github) printLine(`GITHUB  ${links.github.replace(/^https?:\/\//, '')}`, attrs);
+    if (links.cv) printLine(`CV      ${links.cv.replace(/^https?:\/\//, '').replace(/\/$/, '')}`, attrs);
+    blankZXLine();
+    printLine(T.contactNote, { ink: 5 });
+  }
+
+  function showGithub() {
+    const url = data.links && data.links.github;
+    if (!url) {
+      zxError(T.noLink('GITHUB'));
+      return;
+    }
+    printLine(T.opening(url), { ink: 5 });
+    openUrl(url);
+  }
+
+  function showCv() {
+    const url = data.links && data.links.cv;
+    if (!url) {
+      zxError(T.noLink('CV'));
+      return;
+    }
+    printLine(T.opening(url), { ink: 5 });
+    openUrl(url);
+  }
+
+  function showLs() {
+    lastList = PROJECTS;
+    clearScreen();
+    printLine('~', { ink: 6, bright: 1 });
+    T.ls.forEach((text) => printLine(text, attrs));
+  }
+
+  function showTree() {
+    lastList = PROJECTS;
+    clearScreen();
+    printLine('~', { ink: 6, bright: 1 });
+    ['SITE', 'APP', 'TOOL'].forEach((kind) => {
+      printLine(`${kind}S`, { ink: 5 });
+      PROJECTS.filter((project) => project.kind === kind).forEach((project) => {
+        printLine(`  ${project.label.toUpperCase()}`, attrs);
+      });
+    });
+    printLine('ABOUT  CONTACT  README', { ink: 5 });
+  }
+
+  function showNav(target) {
+    const key = String(target || '').trim().toUpperCase();
+    if (key === 'SITES') {
+      showList('SITE');
+      return;
+    }
+    if (key === 'APPS') {
+      showList('APP');
+      return;
+    }
+    if (key === 'TOOLS') {
+      showList('TOOL');
+      return;
+    }
+    if (key === 'WHOAMI') {
+      showWhoami(false);
+      return;
+    }
+    if (key === 'ABOUT') {
+      showWhoami(true);
+      return;
+    }
+    if (key === 'CONTACT') {
+      showContact();
+      return;
+    }
+    if (key === 'GITHUB') {
+      showGithub();
+      return;
+    }
+    if (key === 'CV') {
+      showCv();
+      return;
+    }
+    if (key === 'HELP') {
+      showHelp();
+      return;
+    }
+    if (key === 'SHELL') {
+      setMode('shell');
+      return;
+    }
+    showProject(target);
+  }
+
+  function compileGoto(source) {
+    const text = String(source || '').trim();
+    if (!text) fail('C Nonsense in BASIC');
+    if (/^".*"$/.test(text)) return { type: 'nav', target: text.slice(1, -1) };
+    if (/^\d+$/.test(text)) return { type: 'goto', target: parseExpr(text) };
+    const upper = text.toUpperCase();
+    if (NAV_TOPICS.has(upper)) return { type: 'nav', target: text };
+    if (findProjects(text).length) return { type: 'nav', target: text };
+    if (/^[A-Z][A-Z0-9 ]*$/.test(upper) && text.length > 1) return { type: 'nav', target: text };
+    return { type: 'goto', target: parseExpr(text) };
+  }
+
   function compilePrint(source) {
     const raw = String(source || '').trim();
     if (!raw) return { type: 'print', items: [] };
@@ -933,8 +1231,8 @@
       if (name && !/^[A-Z][A-Z0-9]*$/.test(name)) fail('C Nonsense in BASIC');
       return { type: 'next', name: name || null };
     }
-    if (upper.startsWith('GO TO')) return { type: 'goto', target: parseExpr(text.slice(5)) };
-    if (upper.startsWith('GOTO')) return { type: 'goto', target: parseExpr(text.slice(4)) };
+    if (upper.startsWith('GO TO')) return compileGoto(text.slice(5));
+    if (upper.startsWith('GOTO')) return compileGoto(text.slice(4));
     if (upper.startsWith('GOSUB')) return { type: 'gosub', target: parseExpr(text.slice(5)) };
     if (upper === 'RETURN') return { type: 'return' };
     if (upper.startsWith('INPUT')) return compileInput(text.slice(5));
@@ -955,6 +1253,19 @@
     }
     if (upper.startsWith('CIRCLE')) return { type: 'circle', radius: parseExpr(text.slice(6)) };
     if (upper.startsWith('RANDOMIZE')) return { type: 'nothing' };
+    if (upper === 'SITES' || upper === 'APPS' || upper === 'TOOLS') {
+      return { type: 'nav', target: upper };
+    }
+    if (upper === 'WHOAMI' || upper === 'ABOUT' || upper === 'CONTACT' || upper === 'GITHUB' || upper === 'CV') {
+      return { type: 'nav', target: upper };
+    }
+    if (upper === 'LS' || upper === 'DIR') return { type: 'ls' };
+    if (upper.startsWith('LS ')) return { type: 'nav', target: text.slice(3).trim() };
+    if (upper === 'TREE') return { type: 'tree' };
+    if (upper === 'OPEN') return { type: 'open', target: '' };
+    if (upper.startsWith('OPEN ')) return { type: 'open', target: text.slice(5).trim() };
+    if (upper === 'CAT') return { type: 'cat', target: '' };
+    if (upper.startsWith('CAT ')) return { type: 'cat', target: text.slice(4).trim() };
     const eq = findTopLevelChar(text, '=');
     if (eq > 0) return compileLet(text);
     fail('C Nonsense in BASIC');
@@ -1131,9 +1442,43 @@
         return null;
       }
       case 'goto': {
-        jumpTo(state, toInteger(evalExpr(statement.target)));
+        const target = toInteger(evalExpr(statement.target));
+        if (!state.lines) {
+          if (program.has(target)) {
+            runProgram(false, target);
+            return null;
+          }
+          if (lastList.length && target >= 1 && target <= lastList.length) {
+            showOpen(String(target));
+            return null;
+          }
+          fail('N Statement lost');
+        }
+        jumpTo(state, target);
         return 'jumped';
       }
+      case 'nav':
+        showNav(statement.target);
+        if (String(statement.target).trim().toUpperCase() === 'SHELL') {
+          return state.lines ? 'stopped' : null;
+        }
+        return null;
+      case 'open':
+        showOpen(statement.target);
+        return null;
+      case 'cat':
+        if (!statement.target) {
+          zxError(T.usageCat);
+          return null;
+        }
+        showProject(statement.target);
+        return null;
+      case 'ls':
+        showLs();
+        return null;
+      case 'tree':
+        showTree();
+        return null;
       case 'gosub': {
         if (!state.lines) fail('C Nonsense in BASIC');
         state.gosubStack.push({ lineIndex: state.lineIndex, stmtIndex: state.stmtIndex + 1 });
@@ -1155,6 +1500,7 @@
       case 'new':
         program.clear();
         vars.clear();
+        lastList = [];
         state.forStack = [];
         state.gosubStack = [];
         clearScreen();
@@ -1232,7 +1578,7 @@
     return null;
   }
 
-  function runProgram(resume) {
+  function runProgram(resume, startLine) {
     if (!program.size) {
       printLine('0 OK', attrs);
       return;
@@ -1247,6 +1593,11 @@
         forStack: [],
         gosubStack: [],
       };
+      if (startLine !== undefined) {
+        const index = state.lines.findIndex((line) => line.number === startLine);
+        if (index < 0) fail('N Statement lost');
+        state.lineIndex = index;
+      }
     }
     runState = state;
     let guard = 0;
@@ -1366,8 +1717,15 @@
       'PLOT 128,96   DRAW 20,20',
       'CIRCLE 30',
       '',
+      'NAVIGATION',
+      'SITES  APPS  TOOLS',
+      'GOTO SITES / APPS / TOOLS',
+      'GOTO <NAME>   OPEN <NAME>',
+      'GOTO/OPEN 1..N  CAT <NAME>',
+      'WHOAMI  ABOUT  CONTACT  GITHUB',
       'SHELL  back to console',
       'LOAD ""  demo program',
+      'CV   LS   TREE',
     ];
     lines.forEach((text, index) => {
       printAt(0, index, text, { ink: index === 0 ? 6 : WHITE, bright: index === 0 ? 1 : 0 });
@@ -1387,6 +1745,7 @@
       [90, 'CIRCLE 20'],
     ];
     program.clear();
+    lastList = [];
     try {
       demo.forEach(([number, source]) => {
         program.set(number, { number, source, stmts: compileStatements(source) });
@@ -1443,6 +1802,8 @@
     'GOSUB', 'RETURN', 'INPUT', 'LIST', 'RUN', 'NEW', 'CLS', 'CLEAR', 'STOP',
     'BORDER', 'PAPER', 'INK', 'BRIGHT', 'FLASH', 'PLOT', 'DRAW', 'CIRCLE',
     'RANDOMIZE', 'REM', 'PAUSE', 'SHELL', 'HELP', 'LOAD', 'SAVE',
+    'SITES', 'APPS', 'TOOLS', 'WHOAMI', 'ABOUT', 'CONTACT', 'GITHUB', 'CV',
+    'OPEN', 'CAT', 'LS', 'TREE',
   ];
 
   pane.hidden = true;
