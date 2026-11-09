@@ -6,8 +6,8 @@ default, Czech under `/cs/`), served from a single VPS.
 
 | | |
 |---|---|
-| Live | <https://ondralinek.cz> (after the first deploy) |
-| Host | `ondralinek.cz` |
+| Live | <https://ondralinek.cz> and <https://www.ondralinek.cz> |
+| Host | `ondralinek.cz` + `www.ondralinek.cz` |
 | Source | <https://github.com/ondrej-li/ondralinek.cz> |
 | Stack | Hugo 0.146.0, plain CSS, ~40 lines of vanilla JS |
 | Deploy | git push → systemd timer → Hugo → `/var/www/ondralinek` |
@@ -96,8 +96,9 @@ mailed to `admin@ondralinek.cz`.
 
 ## Notes
 
-* `www.ondralinek.cz` is not part of this vhost. It currently 301s to the
-  personal site at `me.ondralinek.cz`; the landing page lives on the apex.
+* `www.ondralinek.cz` now serves this landing page too (same content, canonical
+  to the apex). The personal site stays at `me.ondralinek.cz`.
 * The apex currently has an `AAAA` record pointing at GitHub Pages. It must be
   changed to `2a01:4f8:c016:e828::1` before `enable-tls.sh` will run — see
   [deploy/DEPLOY.md](deploy/DEPLOY.md).
+* The TLS certificate covers both `ondralinek.cz` and `www.ondralinek.cz`.

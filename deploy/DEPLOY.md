@@ -5,12 +5,12 @@ publishes it. No PHP, no database, no build step outside Hugo.
 
 | | |
 |---|---|
-| Host | `ondralinek.cz` (apex; `www` still 301s to `me.ondralinek.cz`) |
+| Host | `ondralinek.cz` + `www.ondralinek.cz` (same landing page) |
 | Web root | `/var/www/ondralinek` (deploy:www-data) |
 | Source checkout | `~/ondralinek.cz` (deploy user) |
 | vhost | `/etc/nginx/sites-available/ondralinek` → `sites-enabled/ondralinek` |
 | headers | `/etc/nginx/snippets/ondralinek-headers.conf` (HSTS + CSP + …) |
-| TLS | `/etc/letsencrypt/live/ondralinek.cz/` |
+| TLS | `/etc/letsencrypt/live/ondralinek.cz/` (SANs: apex + www) |
 | renewal | `certbot.timer`; deploy hook reloads nginx |
 | logs | `/var/log/nginx/ondralinek.access.log`, `.error.log` |
 | auto-deploy | `ondralinek-autodeploy.timer` (5 min) → `deploy/autodeploy.sh` |
@@ -27,11 +27,18 @@ before TLS can work:
 | Type | Name | Value | Note |
 |---|---|---|---|
 | A | ondralinek.cz | `2.31.33.21` | already correct |
+| A | www.ondralinek.cz | `2.31.33.21` | already correct |
 | AAAA | ondralinek.cz | `2a01:4f8:c016:e828::1` | **currently `2606:50c0:8000::153` (GitHub Pages) — change it** |
+| AAAA | www.ondralinek.cz | `2a01:4f8:c016:e828::1` | optional; no AAAA is also fine |
 
 Let's Encrypt prefers AAAA, so leaving the GitHub Pages AAAA in place makes
 webroot validation fail even though IPv4 is correct. `enable-tls.sh` refuses to
-run while the records disagree with the server.
+run while the records disagree with the server; for a staging-only check use
+`SKIP_DNS_CHECK=1 ./deploy/enable-tls.sh --dry-run`.
+
+`www.ondralinek.cz` used to 301 to `me.ondralinek.cz`. The personal site's vhost
+(and its certificate) must be updated to `me.ondralinek.cz` only — the current
+`ondrej-li/www` deploy has already been changed for this.
 
 Mail records (MX, SPF, DKIM, DMARC) are untouched.
 
@@ -63,10 +70,11 @@ cd ~/ondralinek.cz
 ./deploy/enable-tls.sh
 ```
 
-It checks the records through public resolvers, requests the certificate with the
-**webroot** authenticator (`-w /var/www/ondralinek`, so the versioned vhost is
-never rewritten), installs `deploy/nginx/ondralinek.conf` and verifies both
-schemes. Renewals are handled by `certbot.timer`; `deploy.sh` keeps the ACME
+It checks both names through public resolvers, requests one certificate for
+`ondralinek.cz` and `www.ondralinek.cz` with the **webroot** authenticator (`-w
+/var/www/ondralinek`, so the versioned vhost is never rewritten), installs
+`deploy/nginx/ondralinek.conf` and verifies both names on both schemes. Use
+`./deploy/enable-tls.sh --dry-run` to test validation against staging first. Renewals are handled by `certbot.timer`; `deploy.sh` keeps the ACME
 challenge directory intact.
 
 ## 4. Everyday updates
@@ -106,14 +114,18 @@ excluded).
 
 ```bash
 curl -sSI https://ondralinek.cz/ | head -12
+curl -sSI https://www.ondralinek.cz/ | head -12
 curl -sSI https://ondralinek.cz/css/main.min.*.css | grep -i cache-control
 curl -sSI http://ondralinek.cz/ | grep -i location        # -> https
+curl -sSI http://www.ondralinek.cz/ | grep -i location    # -> https://www
 curl -sS https://ondralinek.cz/ | grep -i content-security-policy
-curl -sS https://ondralinek.cz/cs/ | grep -o '<html lang=[a-z]*>'
+curl -sS https://ondralinek.cz/cs/ | grep -o '<html lang=[a-z]*>' 
+sudo certbot certificates | grep -A2 ondralinek.cz
 ```
 
-Expected: `200`, `Cache-Control: max-age=31536000` on the fingerprinted CSS/JS,
-`301` to HTTPS on port 80, and a CSP without `unsafe-inline`.
+Expected: `200` on both names, `Cache-Control: max-age=31536000` on the
+fingerprinted CSS/JS, `301` to HTTPS on port 80, a CSP without `unsafe-inline`,
+and a certificate whose SANs are `ondralinek.cz` and `www.ondralinek.cz`.
 
 ## 6. Rollback
 
