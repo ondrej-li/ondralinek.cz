@@ -1,0 +1,54 @@
+{{- $app := .app -}}
+{{- $lang := .lang -}}
+{{- $repos := dict -}}
+{{- with site.Data.github }}{{ with .repos }}{{ $repos = . }}{{ end }}{{ end -}}
+{{- $meta := index $repos $app.repo -}}
+{{- $icon := resources.Get $app.icon -}}
+{{- $shot := false -}}
+{{- with $app.shot }}{{ $shot = resources.Get . }}{{ end -}}
+<article class="app-card" id="{{ $app.id }}" data-accent="{{ $app.accent }}" data-reveal>
+  <div class="app-body">
+    <div class="app-head">
+      {{- with $icon }}
+      <img class="app-icon" src="{{ .RelPermalink }}" alt="" width="64" height="64" decoding="async">
+      {{- end }}
+      <div class="app-ident">
+        <h3>{{ $app.name }}</h3>
+        <p class="app-platforms">{{ delimit $app.platforms " · " }}</p>
+      </div>
+      <span class="badge badge--{{ $app.status }}">{{ i18n (printf "status_%s" $app.status) }}</span>
+    </div>
+
+    <p class="app-tagline">{{ index $app.tagline $lang }}</p>
+    <p class="app-summary">{{ index $app.summary $lang }}</p>
+
+    <ul class="tags" aria-label="Tech">
+      {{- range $app.tech }}<li>{{ . }}</li>{{ end }}
+    </ul>
+
+    <div class="app-links">
+      {{- with $app.store }}<a class="btn btn-primary btn-sm" href="{{ . }}">{{ i18n "link_store" }}{{ partial "icon.html" "arrow" }}</a>{{ end }}
+      {{- with $app.site }}<a class="btn btn-sm" href="{{ . }}">{{ i18n "link_site" }}{{ partial "icon.html" "arrow" }}</a>{{ end }}
+      {{- with $app.repo }}<a class="btn btn-ghost btn-sm" href="https://github.com/{{ . }}">{{ i18n "link_repo" }}{{ partial "icon.html" "arrow" }}</a>{{ end }}
+    </div>
+
+    {{- with $meta }}
+    <p class="app-meta mono">
+      <span>{{ i18n "meta_updated" }}</span>
+      {{- with .pushed_at }}
+      <time datetime="{{ . }}">{{ time.Format ":date_medium" (time.AsTime .) }}</time>
+      {{- end }}
+      {{- with .stars }}<span class="sep">/</span><span>★ {{ . }}</span>{{ end }}
+      {{- with .language }}<span class="sep">/</span><span>{{ . }}</span>{{ end }}
+    </p>
+    {{- end }}
+  </div>
+
+  <div class="app-media" aria-hidden="true">
+    {{- with $shot }}
+    <img class="app-shot" src="{{ .RelPermalink }}" alt="" width="720" height="1565" loading="lazy" decoding="async">
+    {{- else }}{{ with $icon }}
+    <img class="app-watermark" src="{{ .RelPermalink }}" alt="" decoding="async">
+    {{- end }}{{ end }}
+  </div>
+</article>

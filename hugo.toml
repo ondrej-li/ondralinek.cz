@@ -1,0 +1,39 @@
+baseURL = "https://ondralinek.cz/"
+title = "Ondra Linek"
+enableRobotsTXT = true
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+# Single-page site: no taxonomy lists, no RSS feeds.
+disableKinds = ["taxonomy", "term", "RSS"]
+
+[params]
+  author = "Ondra Linek"
+  email = "me@ondralinek.cz"
+  github = "https://github.com/ondrej-li"
+  githubUser = "ondrej-li"
+  cv = "https://me.ondralinek.cz/"
+  source = "https://github.com/ondrej-li/ondralinek.cz"
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    languageCode = "en-GB"
+    contentDir = "content/en"
+    weight = 1
+    title = "Ondra Linek — sites, apps & open source"
+    [languages.en.params]
+      description = "Live sites, apps and open-source tools by Ondra Linek — Go, SQL, cloud and LLM on the server, Swift on Apple platforms."
+
+  [languages.cs]
+    languageName = "Čeština"
+    languageCode = "cs-CZ"
+    contentDir = "content/cs"
+    weight = 2
+    title = "Ondra Linek — weby, aplikace a open source"
+    [languages.cs.params]
+      description = "Weby, aplikace a open-source nástroje Ondry Linka — Go, SQL, cloud a LLM na serveru, Swift na platformách Apple."
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true

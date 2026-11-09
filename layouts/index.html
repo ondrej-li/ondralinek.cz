@@ -1,0 +1,125 @@
+{{ define "main" }}
+{{- $apps := site.Data.apps -}}
+{{- $sites := site.Data.sites -}}
+{{- $oss := site.Data.oss -}}
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>{{ i18n "hero_eyebrow" }}</p>
+      <h1 class="hero-title">
+        <span class="hero-line">{{ i18n "hero_title_1" }}</span>
+        <span class="hero-line hero-line--grad">{{ i18n "hero_title_2" }}</span>
+      </h1>
+      <p class="lede">{{ i18n "hero_lede" }}</p>
+      <p class="cta-row">
+        <a class="btn btn-primary" href="#sites">{{ i18n "hero_cta_sites" }}{{ partial "icon.html" "arrow" }}</a>
+        <a class="btn" href="#apps">{{ i18n "hero_cta_apps" }}</a>
+        <a class="btn btn-ghost" href="{{ site.Params.github }}" rel="me">{{ partial "icon.html" "github" }}GitHub</a>
+      </p>
+    </div>
+
+    <aside class="readout" aria-hidden="true" data-reveal>
+      <div class="readout-top">
+        <span class="readout-dot"></span>
+        <span class="mono">{{ i18n "readout_title" }}</span>
+        <span class="readout-year mono">{{ now.Format "2006" }}</span>
+      </div>
+      <dl class="readout-list">
+        <div class="readout-row"><dt class="mono">{{ i18n "readout_sites" }}</dt><dd class="mono">{{ printf "%02d" (len $sites) }}</dd></div>
+        <div class="readout-row"><dt class="mono">{{ i18n "readout_apps" }}</dt><dd class="mono">{{ printf "%02d" (len $apps) }}</dd></div>
+        <div class="readout-row"><dt class="mono">{{ i18n "readout_code" }}</dt><dd class="mono">{{ printf "%02d" (len $oss) }}</dd></div>
+        <div class="readout-row"><dt class="mono">{{ i18n "readout_stack" }}</dt><dd class="mono">Go · SQL · Cloud · LLM</dd></div>
+        <div class="readout-row"><dt class="mono">{{ i18n "readout_status" }}</dt><dd class="mono readout-online"><span class="status-dot" aria-hidden="true"></span>{{ i18n "readout_online" }}</dd></div>
+      </dl>
+      <p class="readout-foot mono">{{ i18n "readout_hint" }}<span class="caret" aria-hidden="true"></span></p>
+    </aside>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    {{- $stack := slice "Go" "SQL" "Cloud" "LLM" "Agents" "Swift" "SwiftUI" "MapKit" "PostgreSQL" "Linux" "systemd" "Docker" }}
+    {{- range $stack }}<span>{{ . }}</span>{{ end }}
+    {{- range $stack }}<span>{{ . }}</span>{{ end }}
+  </div>
+</div>
+
+<section class="section" id="sites">
+  <div class="wrap">
+    <header class="section-head" data-reveal>
+      <p class="kicker mono">{{ i18n "section_sites_kicker" }}</p>
+      <h2>{{ i18n "section_sites_title" }}</h2>
+      <p class="section-lede">{{ i18n "section_sites_lede" }}</p>
+    </header>
+    <ol class="site-list">
+      {{- range $sites }}
+      {{ partial "site-row.html" . }}
+      {{- end }}
+    </ol>
+  </div>
+</section>
+
+<section class="section section--alt" id="apps">
+  <div class="wrap">
+    <header class="section-head" data-reveal>
+      <p class="kicker mono">{{ i18n "section_apps_kicker" }}</p>
+      <h2>{{ i18n "section_apps_title" }}</h2>
+      <p class="section-lede">{{ i18n "section_apps_lede" }}</p>
+    </header>
+    <div class="app-grid">
+      {{- range $apps }}
+      {{ partial "app-card.html" (dict "app" . "lang" site.Language.Lang) }}
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="code">
+  <div class="wrap">
+    <header class="section-head" data-reveal>
+      <p class="kicker mono">{{ i18n "section_code_kicker" }}</p>
+      <h2>{{ i18n "section_code_title" }}</h2>
+      <p class="section-lede">{{ i18n "section_code_lede" }}</p>
+    </header>
+    <div class="oss-grid">
+      {{- range $oss }}
+      {{ partial "oss-card.html" . }}
+      {{- end }}
+    </div>
+    <p class="all-repos" data-reveal>
+      <a class="text-link" href="{{ site.Params.github }}">{{ i18n "all_repos" }}{{ partial "icon.html" "arrow" }}</a>
+    </p>
+  </div>
+</section>
+
+<section class="section section--alt" id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy" data-reveal>
+      <p class="kicker mono">{{ i18n "section_about_kicker" }}</p>
+      <h2>{{ i18n "section_about_title" }}</h2>
+      <p class="about-lead">{{ i18n "about_p1" }}</p>
+      <p class="about-text">{{ i18n "about_p2" }}</p>
+    </div>
+    <aside class="contact-card" data-reveal>
+      <p class="contact-title mono">{{ i18n "contact_heading" }}</p>
+      <a class="contact-row" href="mailto:{{ site.Params.email }}">
+        <span class="contact-label mono">{{ i18n "contact_email" }}</span>
+        <span class="contact-value">{{ site.Params.email }}</span>
+        {{ partial "icon.html" "arrow" }}
+      </a>
+      <a class="contact-row" href="{{ site.Params.github }}" rel="me">
+        <span class="contact-label mono">{{ i18n "contact_github" }}</span>
+        <span class="contact-value">github.com/{{ site.Params.githubUser }}</span>
+        {{ partial "icon.html" "arrow" }}
+      </a>
+      <a class="contact-row" href="{{ site.Params.cv }}">
+        <span class="contact-label mono">{{ i18n "contact_cv" }}</span>
+        <span class="contact-value">me.ondralinek.cz</span>
+        {{ partial "icon.html" "arrow" }}
+      </a>
+      <p class="contact-note">{{ i18n "contact_note" }}</p>
+    </aside>
+  </div>
+</section>
+{{ end }}

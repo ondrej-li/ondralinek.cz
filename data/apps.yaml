@@ -1,0 +1,78 @@
+# Apps shown on the landing page.
+#
+# repo / site / store are used for the links, icon and shot are paths under
+# assets/, status drives the badge, and accent is the card's highlight colour.
+# GitHub metadata (stars, last push) is fetched at build time by
+# tools/fetch-github.py and merged in by the template.
+
+- id: vdv-live
+  name: VDV Live
+  status: live
+  platforms: [iOS, iPadOS, watchOS]
+  repo: ondrej-li/vdv-live
+  site: https://vdv.ondralinek.cz/
+  store: https://apps.apple.com/app/id6824945928
+  icon: images/apps/vdv-live.webp
+  shot: images/shots/vdv-live-1.webp
+  accent: blue
+  tech: [Swift, SwiftUI, MapKit, WidgetKit]
+  tagline:
+    en: "Every bus and train in the Vysočina Region, live on one map."
+    cs: "Všechny autobusy a vlaky Vysočiny naživo na jedné mapě."
+  summary:
+    en: "Live vehicle positions on Apple Maps, departure boards for any stop, and an Apple Watch app for the lines you follow. Free, no account, no ads, no tracking."
+    cs: "Živé polohy vozidel na Apple Maps, odjezdové tabule zastávek a Apple Watch aplikace pro linky, které sledujete. Zdarma, bez účtu, bez reklam a bez sledování."
+
+- id: stats-workout
+  name: StatsWorkout
+  status: live
+  platforms: [iOS, iPadOS]
+  repo: ondrej-li/statsWorkout
+  site: https://stats-workout.ondralinek.cz/
+  store: https://apps.apple.com/app/id6829768113
+  icon: images/apps/stats-workout.webp
+  shot: images/shots/stats-workout-1.webp
+  accent: sky
+  tech: [Swift, SwiftUI, HealthKit, Swift Charts]
+  tagline:
+    en: "Apple Health activity, summarised from a day to a year."
+    cs: "Aktivita z Apple Health od dne po rok, přehledně."
+  summary:
+    en: "Steps, distance, elevation, exercise time and workouts become week, month, quarter and year statistics — with charts you can zoom into, workout routes and splits, and no data leaving the device."
+    cs: "Kroky, vzdálenost, převýšení, čas cvičení a tréninky jako statistiky za týden, měsíc, čtvrtletí či rok — s grafy, do kterých se dá přiblížit, trasami a mezičasy tréninků. Data neopustí zařízení."
+
+- id: stitch
+  name: Stitch
+  status: oss
+  platforms: [macOS, iOS, iPadOS]
+  repo: ondrej-li/stitch
+  site: ""
+  store: ""
+  icon: images/apps/stitch.webp
+  shot: ""
+  accent: red
+  tech: [Swift, SwiftUI, MIT]
+  tagline:
+    en: "Paste a screenshot, mark it up, copy it back."
+    cs: "Vložte screenshot, popište ho, zkopírujte zpět."
+  summary:
+    en: "A Skitch-like annotation app in one codebase for Mac and iPad/iPhone. Paste one image, add arrows, text, shapes, marker or stamps, crop it, then copy or save as PNG — nothing else, by design."
+    cs: "Anotační aplikace ve stylu Skitche z jednoho kódu pro Mac a iPad/iPhone. Vložte jeden obrázek, přidejte šipky, text, tvary, zvýrazňovač nebo razítka, ořežte a zkopírujte či uložte jako PNG — a nic dalšího."
+
+- id: wriggler
+  name: Wriggler
+  status: wip
+  platforms: [iOS, iPadOS]
+  repo: ondrej-li/wriggler
+  site: ""
+  store: ""
+  icon: images/apps/wriggler.webp
+  shot: ""
+  accent: green
+  tech: [Swift, SpriteKit, SwiftUI]
+  tagline:
+    en: "A ZX Spectrum maze classic, loose on iOS."
+    cs: "Klasické bludiště ze ZX Spectra na iOS."
+  summary:
+    en: "A port of the ZX Spectrum maze game: 244 rooms, eight-direction movement, doors and objects to carry and swap. The simulation is a separate, unit-tested core; SpriteKit only draws it."
+    cs: "Port bludištní hry ze ZX Spectra: 244 místností, pohyb osmi směry, dveře a předměty k nošení i výměně. Simulace je samostatné testované jádro, SpriteKit jen kreslí."

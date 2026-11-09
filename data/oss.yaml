@@ -1,0 +1,25 @@
+# Open-source utilities with their own card. Everything else is linked to GitHub.
+
+- repo: ondrej-li/glutton
+  name: glutton
+  lang: Go
+  accent: cyan
+  desc:
+    en: "A tiny HTTP server that accepts any payload and stores it — to the filesystem or PostgreSQL, with token auth, TLS and Docker examples."
+    cs: "Malý HTTP server, který přijme libovolná data a uloží je — na disk nebo do PostgreSQL, s tokenovou autentizací, TLS a Docker ukázkami."
+
+- repo: ondrej-li/spettrum
+  name: spettrum
+  lang: C
+  accent: grey
+  desc:
+    en: "A Z80 and ZX Spectrum emulator that renders the ULA output as Unicode blocks and braille characters, right in the terminal."
+    cs: "Emulátor Z80 a ZX Spectra, který vykresluje ULA výstup pomocí Unicode bloků a braille znaků přímo v terminálu."
+
+- repo: ondrej-li/picoGal
+  name: picoGal
+  lang: JavaScript
+  accent: yellow
+  desc:
+    en: "A tiny jQuery gallery: point it at a container of images and it turns them into a lightbox."
+    cs: "Malá jQuery galerie: stačí ukázat na kontejner s obrázky a zbytek udělá lightbox."

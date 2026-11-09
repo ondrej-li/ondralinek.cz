@@ -1,0 +1,23 @@
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }}">
+      <span class="brand-mark" aria-hidden="true">›_</span>
+      <span class="brand-name">ondralinek<span class="brand-dot">.cz</span></span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+      <span class="nav-toggle-box" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="visually-hidden">{{ i18n "menu" }}</span>
+    </button>
+
+    <nav class="site-nav" id="site-menu" aria-label="{{ i18n "nav_label" }}">
+      <a href="{{ site.Home.RelPermalink }}#sites">{{ i18n "nav_sites" }}</a>
+      <a href="{{ site.Home.RelPermalink }}#apps">{{ i18n "nav_apps" }}</a>
+      <a href="{{ site.Home.RelPermalink }}#code">{{ i18n "nav_code" }}</a>
+      <a href="{{ site.Home.RelPermalink }}#about">{{ i18n "nav_about" }}</a>
+      {{- range .Translations }}
+      <a class="lang-switch" href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.Lang }}" aria-label="{{ i18n "lang_switch_label" }}: {{ .Language.LanguageName }}">{{ .Language.LanguageName }}</a>
+      {{- end }}
+    </nav>
+  </div>
+</header>

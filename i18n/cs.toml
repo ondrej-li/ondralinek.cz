@@ -1,0 +1,151 @@
+# České texty rozhraní
+
+[not_found_title]
+other = "Tahle stránka tu není."
+[not_found_text]
+other = "Odkaz může být starý nebo se stránka přesunula. Všechno, co provozuju, najdete na úvodní stránce."
+[not_found_cta]
+other = "Zpět na úvod"
+
+[skip]
+other = "Přeskočit na obsah"
+
+[brand_tagline]
+other = "softwarový inženýr"
+
+[menu]
+other = "Menu"
+
+[nav_label]
+other = "Hlavní navigace"
+
+[nav_apps]
+other = "Aplikace"
+[nav_sites]
+other = "Weby"
+[nav_code]
+other = "Open source"
+[nav_about]
+other = "O mně"
+
+[hero_eyebrow]
+other = "Inženýr · Odpovídám za výsledek"
+[hero_title_1]
+other = "Weby, aplikace a nástroje"
+[hero_title_2]
+other = "v provozu."
+[hero_lede]
+other = "Jsem Ondra Linek. Stavím backendové systémy v Go a nativní aplikace pro platformy Apple ve Swiftu. Tohle je mapa všeho, co provozuju — živé weby, aplikace a kód za nimi."
+[hero_cta_apps]
+other = "Prohlédnout aplikace"
+[hero_cta_sites]
+other = "Podívat se na weby"
+[hero_cta_github]
+other = "GitHub"
+
+[readout_title]
+other = "systém / index"
+[readout_apps]
+other = "aplikace"
+[readout_sites]
+other = "weby"
+[readout_code]
+other = "nástroje"
+[readout_stack]
+other = "stack"
+[readout_status]
+other = "stav"
+[readout_online]
+other = "online"
+[readout_hint]
+other = "Hugo tuhle stránku přebuildí do pěti minut od každého commitu"
+
+[section_apps_kicker]
+other = "02 — Platformy Apple"
+[section_apps_title]
+other = "Aplikace"
+[section_apps_lede]
+other = "Nativní software pro iPhone, iPad, Mac a Apple Watch. Swift, SwiftUI a framework, který daná práce skutečně potřebuje."
+[section_sites_kicker]
+other = "01 — Na webu"
+[section_sites_title]
+other = "Weby"
+[section_sites_lede]
+other = "Statické weby z jednoho VPS, postavené v Hugu nebo v čistém HTML a nasazované z gitu. Bez CMS, bez databáze, bez sledování."
+[section_code_kicker]
+other = "03 — Open source"
+[section_code_title]
+other = "Kód a nástroje"
+[section_code_lede]
+other = "Malé a soustředěné utility pod permisivními licencemi. Zbytek najdete na GitHubu."
+[section_about_kicker]
+other = "04 — O mně"
+[section_about_title]
+other = "O mně"
+
+[about_p1]
+other = "Jsem softwarový inženýr z Česka. Posledních deset let stavím backendy v Go — interní platformy, onboarding, billing, podpůrné nástroje a automatizaci — a ve volném čase nativní aplikace pro platformy Apple."
+[about_p2]
+other = "Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce."
+[contact_heading]
+other = "Spojte se se mnou"
+[contact_email]
+other = "E-mail"
+[contact_github]
+other = "GitHub"
+[contact_cv]
+other = "CV a praxe"
+[contact_note]
+other = "Otevřený spolupráci, novým projektům a nápadům, které stojí za to postavit."
+
+[status_live]
+other = "App Store"
+[status_beta]
+other = "TestFlight"
+[status_oss]
+other = "Open source"
+[status_wip]
+other = "Ve vývoji"
+
+[footer_label]
+other = "Patička"
+
+[link_site]
+other = "Web"
+[link_repo]
+other = "Zdrojový kód"
+[link_store]
+other = "App Store"
+
+[meta_updated]
+other = "aktualizováno"
+[meta_stars]
+other = "hvězd"
+[all_repos]
+other = "Všechny repozitáře na GitHubu"
+
+[footer_built]
+other = "Postaveno v Hugu."
+[footer_source]
+other = "Zdroj webu"
+[footer_back_top]
+other = "Nahoru"
+
+[lang_switch_label]
+other = "Přepnout jazyk"
+
+[count_apps]
+one = "aplikace"
+few = "aplikace"
+many = "aplikace"
+other = "aplikací"
+[count_sites]
+one = "web"
+few = "weby"
+many = "webu"
+other = "webů"
+[count_code]
+one = "repozitář"
+few = "repozitáře"
+many = "repozitáře"
+other = "repozitářů"

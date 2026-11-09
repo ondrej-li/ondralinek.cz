@@ -1,0 +1,25 @@
+# /etc/systemd/system/ondralinek-autodeploy.service
+# Installed by deploy/deploy.sh; enabled by ondralinek-autodeploy.timer.
+[Unit]
+Description=ondralinek.cz — pull new commits, rebuild with Hugo and publish
+Documentation=https://github.com/ondrej-li/ondralinek.cz/blob/main/deploy/DEPLOY.md
+Wants=network-online.target
+After=network-online.target
+ConditionPathIsDirectory=/home/deploy/ondralinek.cz/.git
+
+[Service]
+Type=oneshot
+User=deploy
+Group=deploy
+WorkingDirectory=/home/deploy/ondralinek.cz
+Environment=MAIL_TO=admin@ondralinek.cz
+ExecStart=/home/deploy/ondralinek.cz/deploy/autodeploy.sh
+TimeoutStartSec=5min
+Nice=10
+IOSchedulingClass=idle
+
+# deploy.sh needs sudo to rsync into /var/www/ondralinek, install the vhost and
+# reload nginx, so filesystem sandboxing would block the legitimate work. The
+# unit still runs as the unprivileged deploy user with a short timeout.
+PrivateTmp=yes
+NoNewPrivileges=no

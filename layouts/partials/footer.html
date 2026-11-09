@@ -1,0 +1,14 @@
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark" aria-hidden="true">›_</span>
+      <span>ondralinek.cz</span>
+    </div>
+    <p class="footer-meta">{{ i18n "footer_built" }}</p>
+    <nav class="footer-nav" aria-label="{{ i18n "footer_label" }}">
+      <a href="{{ site.Params.source }}">{{ i18n "footer_source" }}{{ partial "icon.html" "arrow" }}</a>
+      <a href="#main">{{ i18n "footer_back_top" }} ↑</a>
+    </nav>
+    <p class="footer-copy mono">© {{ now.Format "2006" }} {{ site.Params.author }}</p>
+  </div>
+</footer>

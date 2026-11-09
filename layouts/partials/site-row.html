@@ -1,0 +1,13 @@
+{{- $site := . -}}
+<li class="site-row" data-accent="{{ $site.accent }}" data-reveal>
+  <a class="site-link" href="{{ $site.url }}">
+    <span class="site-dot" aria-hidden="true"></span>
+    <span class="site-ident">
+      <span class="site-domain">{{ $site.domain }}</span>
+      <span class="site-name">{{ $site.name }}</span>
+    </span>
+    <span class="site-desc">{{ index $site.desc site.Language.Lang }}</span>
+    <span class="site-tags mono">{{ delimit $site.tech " · " }}</span>
+    <span class="site-arrow" aria-hidden="true">{{ partial "icon.html" "arrow" }}</span>
+  </a>
+</li>

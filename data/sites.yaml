@@ -1,0 +1,46 @@
+# Sites and services served from the VPS.
+
+- domain: kcna.ondralinek.cz
+  url: https://kcna.ondralinek.cz/
+  name: Novinky z KLDR
+  tech: [Hugo, Archive]
+  accent: red
+  desc:
+    en: "An archive of 1,040 KCNA news items moved from Blogger to Hugo. Every original URL is preserved and images are mirrored locally, so the site depends on nobody."
+    cs: "Archiv 1 040 zpráv agentury KCNA převedený z Bloggeru do Huga. Původní adresy zůstaly, obrázky jsou zrcadlené lokálně — web na ničem cizím nezávisí."
+
+- domain: go.ondralinek.cz
+  url: https://go.ondralinek.cz/
+  name: Jazyk #Go(lang)
+  tech: [Hugo, Go]
+  accent: cyan
+  desc:
+    en: "A Czech blog about Go from its early years: language internals, tooling, testing and a serial written for root.cz. Kept online as an archive."
+    cs: "Český blog o Go z jeho raných let: vnitřnosti jazyka, nástroje, testování a seriál pro root.cz. Zůstává online jako archiv."
+
+- domain: vdv.ondralinek.cz
+  url: https://vdv.ondralinek.cz/
+  name: VDV Live
+  tech: [Static HTML, CSS]
+  accent: blue
+  desc:
+    en: "The product site for VDV Live in Czech and English — what the app does, privacy, support and the App Store link."
+    cs: "Produktový web VDV Live v češtině a angličtině — co aplikace umí, soukromí, podpora a odkaz do App Storu."
+
+- domain: stats-workout.ondralinek.cz
+  url: https://stats-workout.ondralinek.cz/
+  name: StatsWorkout
+  tech: [Static HTML, CSS]
+  accent: sky
+  desc:
+    en: "The product site for StatsWorkout: features, privacy and support, in English and Czech, with the same dark, chart-driven look as the app."
+    cs: "Produktový web StatsWorkout: funkce, soukromí a podpora v angličtině i češtině, se stejným tmavým vzhledem založeným na grafech jako aplikace."
+
+- domain: me.ondralinek.cz
+  url: https://me.ondralinek.cz/
+  name: Ondra Linek — CV
+  tech: [Static HTML]
+  accent: lime
+  desc:
+    en: "The long version: experience, services and skills, plus a contact form. Plain HTML, versioned in git and deployed by a systemd timer."
+    cs: "Delší verze: praxe, služby a dovednosti a kontaktní formulář. Čisté HTML, verzované v gitu a nasazované systemd timerem."

@@ -1,0 +1,145 @@
+# English UI strings (default language)
+
+[not_found_title]
+other = "This page is not here."
+[not_found_text]
+other = "The link may be old, or the page has moved. Everything I run is on the homepage."
+[not_found_cta]
+other = "Back to the index"
+
+[skip]
+other = "Skip to content"
+
+[brand_tagline]
+other = "software engineer"
+
+[menu]
+other = "Menu"
+
+[nav_label]
+other = "Main navigation"
+
+[nav_apps]
+other = "Apps"
+[nav_sites]
+other = "Sites"
+[nav_code]
+other = "Open source"
+[nav_about]
+other = "About"
+
+[hero_eyebrow]
+other = "Engineer · I own the outcome"
+[hero_title_1]
+other = "Sites, apps & tools"
+[hero_title_2]
+other = "running live."
+[hero_lede]
+other = "I'm Ondra Linek. I build backend systems in Go and native apps for Apple platforms in Swift. This is a map of everything I run — the live sites, the apps, and the code behind them."
+[hero_cta_apps]
+other = "Explore the apps"
+[hero_cta_sites]
+other = "See the sites"
+[hero_cta_github]
+other = "GitHub"
+
+[readout_title]
+other = "system / index"
+[readout_apps]
+other = "apps"
+[readout_sites]
+other = "sites"
+[readout_code]
+other = "tools"
+[readout_stack]
+other = "stack"
+[readout_status]
+other = "status"
+[readout_online]
+other = "online"
+[readout_hint]
+other = "Hugo rebuilds this page within five minutes of every commit"
+
+[section_apps_kicker]
+other = "02 — Apple platforms"
+[section_apps_title]
+other = "Apps"
+[section_apps_lede]
+other = "Native software for iPhone, iPad, Mac and Apple Watch. Swift, SwiftUI, and whatever framework the job actually needs."
+[section_sites_kicker]
+other = "01 — On the web"
+[section_sites_title]
+other = "Sites"
+[section_sites_lede]
+other = "Static sites served from a single VPS, built with Hugo or plain HTML and deployed from git. No CMS, no database, no tracking."
+[section_code_kicker]
+other = "03 — Open source"
+[section_code_title]
+other = "Code & tools"
+[section_code_lede]
+other = "Small, focused utilities released under permissive licences. Everything else is on GitHub."
+[section_about_kicker]
+other = "04 — About"
+[section_about_title]
+other = "About"
+
+[about_p1]
+other = "I'm a software engineer from Czechia. I have spent the last decade building Go backends — internal platforms, onboarding, billing, support tooling and automation — and I build native apps for Apple platforms in my own time."
+[about_p2]
+other = "I take systems from idea to production and stay responsible for them: architecture, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job."
+[contact_heading]
+other = "Get in touch"
+[contact_email]
+other = "E-mail"
+[contact_github]
+other = "GitHub"
+[contact_cv]
+other = "CV & experience"
+[contact_note]
+other = "Open to collaboration, new projects and ideas worth building."
+
+[status_live]
+other = "App Store"
+[status_beta]
+other = "TestFlight"
+[status_oss]
+other = "Open source"
+[status_wip]
+other = "In development"
+
+[footer_label]
+other = "Footer"
+
+[link_site]
+other = "Website"
+[link_repo]
+other = "Source"
+[link_store]
+other = "App Store"
+
+[meta_updated]
+other = "updated"
+[meta_stars]
+other = "stars"
+[all_repos]
+other = "All repositories on GitHub"
+
+[footer_built]
+other = "Built with Hugo."
+[footer_source]
+other = "Site source"
+[footer_back_top]
+other = "Back to top"
+
+[lang_switch_label]
+other = "Switch language"
+
+[count_apps]
+one = "app"
+other = "apps"
+[count_sites]
+one = "site"
+other = "sites"
+[count_code]
+one = "repo"
+other = "repos"

@@ -1,0 +1,16 @@
+{{- $item := . -}}
+{{- $repos := dict -}}
+{{- with site.Data.github }}{{ with .repos }}{{ $repos = . }}{{ end }}{{ end -}}
+{{- $meta := index $repos $item.repo -}}
+<article class="oss-card" data-accent="{{ $item.accent }}" data-reveal>
+  <div class="oss-head">
+    <span class="lang-dot" aria-hidden="true"></span>
+    <h3>{{ $item.name }}</h3>
+    <span class="oss-lang mono">{{ $item.lang }}</span>
+  </div>
+  <p class="oss-desc">{{ index $item.desc site.Language.Lang }}</p>
+  <div class="oss-foot">
+    <a class="text-link" href="https://github.com/{{ $item.repo }}">{{ i18n "link_repo" }}{{ partial "icon.html" "arrow" }}</a>
+    {{- with $meta }}{{ with .pushed_at }}<span class="oss-meta mono">{{ time.Format ":date_medium" (time.AsTime .) }}</span>{{ end }}{{ end }}
+  </div>
+</article>
