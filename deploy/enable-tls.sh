@@ -98,8 +98,19 @@ sudo systemctl reload nginx
 
 echo "==> verifying"
 for name in "$DOMAIN" "$WWW"; do
-    code="$(curl -sS -o /dev/null -w '%{http_code}' --resolve "$name:443:127.0.0.1" "https://$name/")"
-    echo "    https://$name/ -> $code"
-    redirect="$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' --resolve "$name:80:127.0.0.1" "http://$name/")"
-    echo "    http://$name/ -> $redirect"
+    # nginx picks the new config up a moment after `systemctl reload`, so give
+    # the reload a few seconds before failing the cutover.
+    code=""
+    for _ in 1 2 3 4 5; do
+        code="$(curl -sS -o /dev/null -w '%{http_code}' --resolve "$name:443:127.0.0.1" "https://$name/" 2>/dev/null || true)"
+        [ "$code" = "200" ] && break
+        sleep 1
+    done
+    echo "    https://$name/ -> ${code:-no response}"
+    redirect="$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' --resolve "$name:80:127.0.0.1" "http://$name/" 2>/dev/null || true)"
+    echo "    http://$name/ -> ${redirect:-no response}"
+    if [ "$code" != "200" ]; then
+        echo "ERROR: HTTPS did not come up for $name." >&2
+        exit 1
+    fi
 done
