@@ -32,28 +32,45 @@
       </p>
     </div>
 
-    <aside class="terminal" data-terminal="{{ $terminal | jsonify }}" data-reveal aria-label="{{ i18n "terminal_label" }}">
+    <aside class="terminal" data-terminal="{{ $terminal | jsonify }}" data-mode="shell" data-reveal aria-label="{{ i18n "terminal_label" }}">
       <div class="terminal-bar">
         <span class="terminal-lights" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="terminal-title mono">{{ i18n "readout_title" }}</span>
-        <span class="terminal-year mono">{{ now.Format "2006" }}</span>
+        <span class="terminal-title mono" data-terminal-title>{{ i18n "readout_title" }}</span>
+        <div class="terminal-switch" role="group" aria-label="{{ i18n "terminal_mode_label" }}">
+          <button type="button" class="t-mode is-active" data-mode="shell" aria-pressed="true">{{ i18n "terminal_mode_shell" }}</button>
+          <button type="button" class="t-mode" data-mode="zx" aria-pressed="false">{{ i18n "terminal_mode_zx" }}</button>
+        </div>
+        <span class="terminal-year mono" data-terminal-year>{{ now.Format "2006" }}</span>
       </div>
-      <div class="terminal-out" role="log" aria-live="polite" aria-label="{{ i18n "terminal_output" }}">
-        <p class="t-line t-dim">{{ i18n "terminal_boot" }}</p>
-        <p class="t-line t-dim">{{ i18n "terminal_hint" }}</p>
-        <dl class="readout-list">
-          <div class="readout-row"><dt class="mono">{{ i18n "readout_sites" }}</dt><dd class="mono">{{ printf "%02d" (len $sites) }}</dd></div>
-          <div class="readout-row"><dt class="mono">{{ i18n "readout_apps" }}</dt><dd class="mono">{{ printf "%02d" (len $apps) }}</dd></div>
-          <div class="readout-row"><dt class="mono">{{ i18n "readout_code" }}</dt><dd class="mono">{{ printf "%02d" (len $oss) }}</dd></div>
-          <div class="readout-row"><dt class="mono">{{ i18n "readout_stack" }}</dt><dd class="mono">Go · SQL · Cloud · LLM</dd></div>
-          <div class="readout-row"><dt class="mono">{{ i18n "readout_status" }}</dt><dd class="mono readout-online"><span class="status-dot" aria-hidden="true"></span>{{ i18n "readout_online" }}</dd></div>
-        </dl>
-        <noscript><p class="t-line t-warn">{{ i18n "terminal_noscript" }}</p></noscript>
+      <div class="terminal-shell">
+        <div class="terminal-out" role="log" aria-live="polite" aria-label="{{ i18n "terminal_output" }}">
+          <p class="t-line t-dim">{{ i18n "terminal_boot" }}</p>
+          <p class="t-line t-dim">{{ i18n "terminal_hint" }}</p>
+          <dl class="readout-list">
+            <div class="readout-row"><dt class="mono">{{ i18n "readout_sites" }}</dt><dd class="mono">{{ printf "%02d" (len $sites) }}</dd></div>
+            <div class="readout-row"><dt class="mono">{{ i18n "readout_apps" }}</dt><dd class="mono">{{ printf "%02d" (len $apps) }}</dd></div>
+            <div class="readout-row"><dt class="mono">{{ i18n "readout_code" }}</dt><dd class="mono">{{ printf "%02d" (len $oss) }}</dd></div>
+            <div class="readout-row"><dt class="mono">{{ i18n "readout_stack" }}</dt><dd class="mono">Go · SQL · Cloud · LLM</dd></div>
+            <div class="readout-row"><dt class="mono">{{ i18n "readout_status" }}</dt><dd class="mono readout-online"><span class="status-dot" aria-hidden="true"></span>{{ i18n "readout_online" }}</dd></div>
+          </dl>
+          <noscript><p class="t-line t-warn">{{ i18n "terminal_noscript" }}</p></noscript>
+        </div>
+        <div class="terminal-prompt">
+          <label class="t-prompt mono" for="terminal-input">ondra@ondralinek:~$</label>
+          <span class="t-caret" aria-hidden="true"></span>
+          <input id="terminal-input" class="t-input mono" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="{{ i18n "terminal_input" }}" placeholder="{{ i18n "terminal_placeholder" }}">
+        </div>
       </div>
-      <div class="terminal-prompt">
-        <label class="t-prompt mono" for="terminal-input">ondra@ondralinek:~$</label>
-        <span class="t-caret" aria-hidden="true"></span>
-        <input id="terminal-input" class="t-input mono" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="{{ i18n "terminal_input" }}" placeholder="{{ i18n "terminal_placeholder" }}">
+      <div class="zx-view" aria-label="{{ i18n "zx_label" }}">
+        <div class="zx-monitor">
+          <div class="zx-screen" data-border="7">
+            <div class="zx-paper" data-paper="0" data-bright="0">
+              <canvas class="zx-canvas" width="256" height="192" aria-hidden="true"></canvas>
+              <div class="zx-grid" aria-hidden="true"></div>
+              <input id="zx-input" class="zx-input" type="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="{{ i18n "zx_input" }}">
+            </div>
+          </div>
+        </div>
       </div>
     </aside>
   </div>
@@ -148,4 +165,6 @@
 {{ define "scripts" }}
 {{- $js := resources.Get "js/terminal.js" | minify | fingerprint "sha256" }}
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{- $zx := resources.Get "js/zx.js" | minify | fingerprint "sha256" }}
+<script src="{{ $zx.RelPermalink }}" integrity="{{ $zx.Data.Integrity }}" defer></script>
 {{ end }}

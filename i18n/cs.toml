@@ -21,6 +21,16 @@ other = "ondralinek.cz — interaktivní shell"
 other = "Napište `help` pro příkazy, `hangman` pro hru."
 [terminal_noscript]
 other = "Konzole potřebuje JavaScript; index výše funguje i bez něj."
+[terminal_mode_label]
+other = "Režim terminálu"
+[terminal_mode_shell]
+other = "Shell"
+[terminal_mode_zx]
+other = "ZX 48K"
+[zx_label]
+other = "Obrazovka ZX Spectrum 48K"
+[zx_input]
+other = "Příkaz ZX Spectrum BASIC"
 
 [skip]
 other = "Přeskočit na obsah"

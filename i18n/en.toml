@@ -21,6 +21,16 @@ other = "ondralinek.cz — interactive shell"
 other = "Type `help` for commands, `hangman` for a game."
 [terminal_noscript]
 other = "The console needs JavaScript; the index above still works."
+[terminal_mode_label]
+other = "Terminal mode"
+[terminal_mode_shell]
+other = "Shell"
+[terminal_mode_zx]
+other = "ZX 48K"
+[zx_label]
+other = "ZX Spectrum 48K screen"
+[zx_input]
+other = "ZX Spectrum BASIC command"
 
 [skip]
 other = "Skip to content"

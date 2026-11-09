@@ -9,7 +9,7 @@ default, Czech under `/cs/`), served from a single VPS.
 | Live | <https://ondralinek.cz> and <https://www.ondralinek.cz> |
 | Host | `ondralinek.cz` + `www.ondralinek.cz` |
 | Source | <https://github.com/ondrej-li/ondralinek.cz> |
-| Stack | Hugo 0.146.0, plain CSS, ~40 lines of vanilla JS |
+| Stack | Hugo 0.146.0, plain CSS, vanilla JS |
 | Deploy | git push → systemd timer → Hugo → `/var/www/ondralinek` |
 
 ## Local preview
@@ -61,11 +61,27 @@ omitted when the file is missing, so a build without network still works.
 * The server refreshes this hourly even when nothing was pushed, so repository
   changes show up without editing the site.
 
+## Console and ZX Spectrum
+
+The hero is a small interactive shell. `help`, `ls`, `cd`, `cat`, `tree`, `open`,
+`neofetch`, `hangman` and the site/app/tool listings all work; project rows and
+tree entries are clickable and open in a new tab.
+
+`zx` (or `spectrum`, or the **Shell / ZX 48K** switch in the terminal bar) boots
+a simulated ZX Spectrum 48K: a 32×24 character screen with the Spectrum palette,
+`BORDER`/`PAPER`/`INK`/`BRIGHT`/`FLASH`, `PLOT`/`DRAW`/`CIRCLE`, and a compact
+BASIC interpreter with `PRINT`, `LET`, `IF/THEN/ELSE`, `FOR/NEXT`, `GOTO`,
+`GOSUB/RETURN`, `INPUT`, `LIST`, `RUN`, `NEW`, `CLS`, `HELP` and `LOAD ""` (demo
+program). `SHELL` or Escape returns to the console. BASIC keywords stay English
+on both language versions, as they were on the original machine.
+
 ## Structure
 
 ```
 assets/css/main.css        the whole design (dark, grid-based, no frameworks)
 assets/js/main.js          scroll reveal + mobile menu
+assets/js/terminal.js      shell commands, project links, hangman
+assets/js/zx.js            ZX Spectrum screen, palette and BASIC interpreter
 assets/images/apps/        optimised app icons (WebP)
 assets/images/shots/       optimised screenshots (WebP)
 content/{en,cs}/_index.md  home pages

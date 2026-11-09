@@ -35,6 +35,7 @@
         ['github', 'open the GitHub profile'],
         ['contact', 'e-mail, GitHub, CV'],
         ['hangman', 'play hangman'],
+        ['zx · spectrum', 'boot the ZX Spectrum 48K'],
         ['date · uname · neofetch · uptime', 'system information'],
         ['echo <text>', 'print text'],
         ['history', 'command history'],
@@ -120,6 +121,7 @@
         ['github', 'otevře profil na GitHubu'],
         ['contact', 'e-mail, GitHub, CV'],
         ['hangman', 'zahraje hangmana'],
+        ['zx · spectrum', 'spustí ZX Spectrum 48K'],
         ['date · uname · neofetch · uptime', 'systémové informace'],
         ['echo <text>', 'vypíše text'],
         ['history', 'historie příkazů'],
@@ -193,9 +195,9 @@
 
   const COMMANDS = [
     'help', 'ls', 'cd', 'pwd', 'cat', 'tree', 'open', 'sites', 'apps', 'tools',
-    'whoami', 'about', 'github', 'contact', 'hangman', 'date', 'uname',
-    'neofetch', 'uptime', 'echo', 'history', 'clear', 'sudo', 'exit', 'rm',
-    'projects', 'me',
+    'whoami', 'about', 'github', 'contact', 'hangman', 'zx', 'spectrum',
+    'date', 'uname', 'neofetch', 'uptime', 'echo', 'history', 'clear', 'sudo',
+    'exit', 'rm', 'projects', 'me',
   ];
   const WORDS = ['GOLANG', 'SWIFTUI', 'SPECTRUM', 'HANGMAN', 'COMPILER', 'PIPELINE', 'DATABASE', 'TERMINAL', 'KEYBOARD', 'MAINFRAME'];
 
@@ -252,6 +254,16 @@
   function kvLink(key, label, url) {
     const row = el('div', 't-row');
     row.append(el('span', 't-row-key', key), link(url, label));
+    out.appendChild(row);
+    scroll();
+  }
+
+  function kvRowLink(key, value, url) {
+    const row = el('a', 't-row t-row-link');
+    row.href = url;
+    row.target = '_blank';
+    row.rel = 'noopener noreferrer';
+    row.append(el('span', 't-row-key', key), el('span', 't-row-val', value));
     out.appendChild(row);
     scroll();
   }
@@ -327,7 +339,9 @@
   function printMatches(matches) {
     line(S.multiple, 't-warn');
     for (const match of matches) {
-      line(`  ${match.key}  ·  ${match.type}`, 't-dim');
+      const url = urlFor(match);
+      if (url) kvRowLink(match.key, match.type, url);
+      else line(`  ${match.key}  ·  ${match.type}`, 't-dim');
     }
     blank();
   }
@@ -387,32 +401,50 @@
       line(S.lsDirs, 't-accent');
       line(S.lsFiles, 't-dim');
     } else if (dir === '~/sites') {
-      (data.sites || []).forEach((site) => kv(site.domain, site.name));
+      (data.sites || []).forEach((site) => kvRowLink(site.domain, site.name, site.url));
     } else if (dir === '~/apps') {
-      (data.apps || []).forEach((app) => kv(app.name, app.platforms || ''));
+      (data.apps || []).forEach((app) => {
+        const url = urlFor({ type: 'app', item: app });
+        if (url) kvRowLink(app.name, app.platforms || '', url);
+        else kv(app.name, app.platforms || '');
+      });
     } else if (dir === '~/tools') {
-      (data.tools || []).forEach((tool) => kv(tool.name, tool.lang || ''));
+      (data.tools || []).forEach((tool) => {
+        const url = tool.repo ? 'https://github.com/' + tool.repo : '';
+        if (url) kvRowLink(tool.name, tool.lang || '', url);
+        else kv(tool.name, tool.lang || '');
+      });
     }
   }
 
+  function treeRow(prefix, label, url) {
+    const row = el('div', 't-tree-row');
+    row.appendChild(el('span', 't-tree-branch', prefix));
+    if (url) row.appendChild(link(url, label));
+    else row.appendChild(el('span', '', label));
+    out.appendChild(row);
+  }
+
   function printTree() {
-    const lines = ['~', '├── sites/'];
+    treeRow('', '~');
+    treeRow('├── ', 'sites/');
     (data.sites || []).forEach((site, index) => {
-      lines.push(`│   ${index === data.sites.length - 1 ? '└──' : '├──'} ${site.domain}`);
+      const last = index === data.sites.length - 1;
+      treeRow(`│   ${last ? '└──' : '├──'} `, site.domain, site.url);
     });
-    lines.push('├── apps/');
+    treeRow('├── ', 'apps/');
     (data.apps || []).forEach((app, index) => {
-      lines.push(`│   ${index === data.apps.length - 1 ? '└──' : '├──'} ${app.name}`);
+      const last = index === data.apps.length - 1;
+      treeRow(`│   ${last ? '└──' : '├──'} `, app.name, urlFor({ type: 'app', item: app }));
     });
-    lines.push('├── tools/');
+    treeRow('├── ', 'tools/');
     (data.tools || []).forEach((tool, index) => {
-      lines.push(`│   ${index === data.tools.length - 1 ? '└──' : '├──'} ${tool.name}`);
+      const last = index === data.tools.length - 1;
+      treeRow(`│   ${last ? '└──' : '├──'} `, tool.name, tool.repo ? 'https://github.com/' + tool.repo : '');
     });
-    lines.push('├── about.txt');
-    lines.push('├── contact.txt');
-    lines.push('└── README.md');
-    const pre = el('pre', 't-pre', lines.join('\n'));
-    out.appendChild(pre);
+    treeRow('├── ', 'about.txt');
+    treeRow('├── ', 'contact.txt');
+    treeRow('└── ', 'README.md');
     blank();
     scroll();
   }
@@ -621,13 +653,13 @@
         break;
       }
       case 'sites':
-        (data.sites || []).forEach((site) => kv(site.domain, site.name));
+        listDirectory('~/sites');
         break;
       case 'apps':
-        (data.apps || []).forEach((app) => kv(app.name, app.platforms || ''));
+        listDirectory('~/apps');
         break;
       case 'tools':
-        (data.tools || []).forEach((tool) => kv(tool.name, tool.lang || ''));
+        listDirectory('~/tools');
         break;
       case 'whoami':
       case 'me':
@@ -649,6 +681,10 @@
         break;
       case 'hangman':
         startHangman();
+        break;
+      case 'zx':
+      case 'spectrum':
+        root.dispatchEvent(new CustomEvent('terminal:zx'));
         break;
       case 'date':
         line(new Date().toLocaleString(locale, { dateStyle: 'full', timeStyle: 'medium' }), 't-block');
@@ -768,7 +804,8 @@
   });
 
   root.addEventListener('click', (event) => {
-    if (event.target.closest('a')) return;
+    if (event.target.closest('a, button')) return;
+    if (root.dataset.mode === 'zx') return;
     input.focus();
   });
 
