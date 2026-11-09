@@ -7,6 +7,21 @@ other = "Odkaz může být starý nebo se stránka přesunula. Všechno, co prov
 [not_found_cta]
 other = "Zpět na úvod"
 
+[terminal_label]
+other = "Interaktivní konzole"
+[terminal_output]
+other = "Výstup konzole"
+[terminal_input]
+other = "Příkaz terminálu"
+[terminal_placeholder]
+other = "napište help"
+[terminal_boot]
+other = "ondralinek.cz — interaktivní shell"
+[terminal_hint]
+other = "Napište `help` pro příkazy, `hangman` pro hru."
+[terminal_noscript]
+other = "Konzole potřebuje JavaScript; index výše funguje i bez něj."
+
 [skip]
 other = "Přeskočit na obsah"
 

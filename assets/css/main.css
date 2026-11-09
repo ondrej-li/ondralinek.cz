@@ -414,65 +414,248 @@ a {
   font-size: 0.77rem;
 }
 
-/* --------------------------------------------------------- readout */
+/* -------------------------------------------------------- terminal */
 
-.readout {
+.terminal {
   position: relative;
-  padding: 1.35rem 1.4rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  height: clamp(380px, 48vh, 470px);
   border: 1px solid var(--line-strong);
   border-radius: 16px;
   background:
-    linear-gradient(160deg, rgba(17, 25, 37, 0.92), rgba(6, 9, 14, 0.94));
+    radial-gradient(120% 120% at 100% 0%, rgba(77, 227, 255, 0.07), transparent 45%),
+    linear-gradient(160deg, rgba(17, 25, 37, 0.96), rgba(6, 9, 14, 0.98));
   box-shadow:
     0 40px 90px -50px rgba(77, 227, 255, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(10px);
   overflow: hidden;
+  font-family: var(--mono);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
 
-.readout::before {
+.terminal:focus-within {
+  border-color: color-mix(in srgb, var(--cyan) 45%, var(--line-strong));
+  box-shadow:
+    0 40px 90px -45px rgba(77, 227, 255, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.terminal::before {
   content: "";
   position: absolute;
   inset: 7px;
+  z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.035);
   border-radius: 10px;
   pointer-events: none;
 }
 
-.readout::after {
+.terminal::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   top: -40%;
+  z-index: 1;
   height: 40%;
-  background: linear-gradient(180deg, transparent, rgba(77, 227, 255, 0.06), transparent);
+  background: linear-gradient(180deg, transparent, rgba(77, 227, 255, 0.05), transparent);
   animation: scan 7s linear infinite;
   pointer-events: none;
 }
 
-.readout-top {
+.terminal-bar {
+  position: relative;
+  z-index: 3;
   display: flex;
+  flex: none;
   align-items: center;
-  gap: 0.6rem;
-  padding-bottom: 0.9rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
+  gap: 0.8rem;
+  padding: 0.65rem 0.95rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.terminal-lights {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-lights i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+  opacity: 0.85;
+}
+
+.terminal-lights i:nth-child(2) {
+  background: #febc2e;
+}
+
+.terminal-lights i:nth-child(3) {
+  background: #28c840;
+}
+
+.terminal-title {
+  margin-inline: auto;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
+  white-space: nowrap;
 }
 
-.readout-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 10px var(--cyan);
-}
-
-.readout-year {
-  margin-left: auto;
+.terminal-year {
+  font-size: 0.62rem;
   color: var(--muted-2);
+}
+
+.terminal-out {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.85rem 1rem 0.35rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.terminal-out::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-out::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 3px;
+}
+
+.t-line {
+  margin: 0 0 0.12rem;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.t-dim {
+  color: var(--muted-2);
+}
+
+.t-accent,
+.t-cmd {
+  color: var(--cyan);
+}
+
+.t-ok {
+  color: var(--lime);
+}
+
+.t-warn {
+  color: var(--amber);
+}
+
+.t-err {
+  color: #ff6b81;
+}
+
+.t-user {
+  color: var(--violet);
+}
+
+.t-prompt-inline {
+  color: var(--lime);
+}
+
+.t-echo {
+  color: var(--text);
+}
+
+.t-link {
+  color: var(--cyan);
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+
+.t-link:hover {
+  color: var(--lime);
+}
+
+.t-block {
+  margin: 0.45rem 0 0.55rem;
+}
+
+.t-pre {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: var(--text);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.t-rule {
+  height: 1px;
+  margin: 0.45rem 0;
+  background: repeating-linear-gradient(90deg, var(--line-strong) 0 4px, transparent 4px 8px);
+}
+
+.t-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0 0 0.12rem;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.t-row-key {
+  flex: 0 0 auto;
+  min-width: 84px;
+  color: var(--cyan);
+}
+
+.t-row-val {
+  min-width: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.t-neofetch {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin: 0.3rem 0 0.5rem;
+}
+
+.t-neofetch .t-pre {
+  margin: 0;
+  color: var(--cyan);
+}
+
+.t-neofetch dl {
+  min-width: 0;
+  margin: 0;
+}
+
+.t-neofetch .t-row {
+  gap: 0.7rem;
+}
+
+.t-neofetch .t-row-key {
+  flex: 0 0 70px;
+  color: var(--lime);
+}
+
+.t-neofetch .t-row-val {
+  color: var(--muted);
 }
 
 .readout-list {
@@ -518,22 +701,73 @@ a {
   box-shadow: 0 0 8px var(--lime);
 }
 
-.readout-foot {
-  margin: 0.9rem 0 0;
-  font-size: 0.62rem;
-  line-height: 1.6;
-  letter-spacing: 0.04em;
-  color: var(--muted-2);
+.terminal .readout-list {
+  margin: 0.55rem 0 0.25rem;
 }
 
-.caret {
-  display: inline-block;
-  width: 6px;
-  height: 0.9em;
-  margin-left: 3px;
-  vertical-align: -0.12em;
+.terminal .readout-row {
+  padding: 0.42rem 0;
+}
+
+.terminal .readout-row dt {
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+}
+
+.terminal .readout-row dd {
+  font-size: 0.76rem;
+}
+
+.terminal-prompt {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1rem 0.85rem;
+  border-top: 1px dashed var(--line-strong);
+  background: rgba(0, 0, 0, 0.22);
+  cursor: text;
+}
+
+.t-prompt {
+  flex: none;
+  color: var(--lime);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.t-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  outline: none;
+}
+
+.t-input::placeholder {
+  color: var(--muted-2);
+  opacity: 0.8;
+}
+
+.t-caret {
+  flex: none;
+  width: 7px;
+  height: 1em;
+  margin-left: -4px;
   background: var(--cyan);
   animation: blink 1.1s steps(1) infinite;
+  pointer-events: none;
+}
+
+.terminal:focus-within .t-caret {
+  visibility: hidden;
 }
 
 /* ---------------------------------------------------------- ticker */
@@ -1264,7 +1498,7 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .readout {
+  .terminal {
     max-width: 480px;
   }
 
@@ -1378,8 +1612,27 @@ a {
     padding-block: 2.75rem 2.5rem;
   }
 
-  .readout {
+  .terminal {
     max-width: none;
+    height: clamp(360px, 54vh, 430px);
+  }
+
+  .t-input {
+    font-size: 16px;
+  }
+
+  .t-row {
+    flex-direction: column;
+    gap: 0.05rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .t-row-key {
+    flex: none;
+  }
+
+  .t-neofetch {
+    gap: 0.8rem;
   }
 
   .cta-row .btn {

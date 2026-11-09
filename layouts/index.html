@@ -2,6 +2,19 @@
 {{- $apps := site.Data.apps -}}
 {{- $sites := site.Data.sites -}}
 {{- $oss := site.Data.oss -}}
+{{- $sitesT := slice -}}
+{{- range $sites -}}
+  {{- $sitesT = $sitesT | append (dict "domain" .domain "name" .name "url" .url "desc" (index .desc site.Language.Lang)) -}}
+{{- end -}}
+{{- $appsT := slice -}}
+{{- range $apps -}}
+  {{- $appsT = $appsT | append (dict "id" .id "name" .name "platforms" (delimit .platforms " · ") "status" .status "site" .site "store" .store "repo" .repo "tagline" (index .tagline site.Language.Lang) "summary" (index .summary site.Language.Lang)) -}}
+{{- end -}}
+{{- $toolsT := slice -}}
+{{- range $oss -}}
+  {{- $toolsT = $toolsT | append (dict "name" .name "repo" .repo "lang" .lang "desc" (index .desc site.Language.Lang)) -}}
+{{- end -}}
+{{- $terminal := dict "lang" site.Language.Lang "sites" $sitesT "apps" $appsT "tools" $toolsT "links" (dict "github" site.Params.github "email" site.Params.email "cv" site.Params.cv) -}}
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="wrap hero-grid">
@@ -19,20 +32,29 @@
       </p>
     </div>
 
-    <aside class="readout" aria-hidden="true" data-reveal>
-      <div class="readout-top">
-        <span class="readout-dot"></span>
-        <span class="mono">{{ i18n "readout_title" }}</span>
-        <span class="readout-year mono">{{ now.Format "2006" }}</span>
+    <aside class="terminal" data-terminal="{{ $terminal | jsonify }}" data-reveal aria-label="{{ i18n "terminal_label" }}">
+      <div class="terminal-bar">
+        <span class="terminal-lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="terminal-title mono">{{ i18n "readout_title" }}</span>
+        <span class="terminal-year mono">{{ now.Format "2006" }}</span>
       </div>
-      <dl class="readout-list">
-        <div class="readout-row"><dt class="mono">{{ i18n "readout_sites" }}</dt><dd class="mono">{{ printf "%02d" (len $sites) }}</dd></div>
-        <div class="readout-row"><dt class="mono">{{ i18n "readout_apps" }}</dt><dd class="mono">{{ printf "%02d" (len $apps) }}</dd></div>
-        <div class="readout-row"><dt class="mono">{{ i18n "readout_code" }}</dt><dd class="mono">{{ printf "%02d" (len $oss) }}</dd></div>
-        <div class="readout-row"><dt class="mono">{{ i18n "readout_stack" }}</dt><dd class="mono">Go · SQL · Cloud · LLM</dd></div>
-        <div class="readout-row"><dt class="mono">{{ i18n "readout_status" }}</dt><dd class="mono readout-online"><span class="status-dot" aria-hidden="true"></span>{{ i18n "readout_online" }}</dd></div>
-      </dl>
-      <p class="readout-foot mono">{{ i18n "readout_hint" }}<span class="caret" aria-hidden="true"></span></p>
+      <div class="terminal-out" role="log" aria-live="polite" aria-label="{{ i18n "terminal_output" }}">
+        <p class="t-line t-dim">{{ i18n "terminal_boot" }}</p>
+        <p class="t-line t-dim">{{ i18n "terminal_hint" }}</p>
+        <dl class="readout-list">
+          <div class="readout-row"><dt class="mono">{{ i18n "readout_sites" }}</dt><dd class="mono">{{ printf "%02d" (len $sites) }}</dd></div>
+          <div class="readout-row"><dt class="mono">{{ i18n "readout_apps" }}</dt><dd class="mono">{{ printf "%02d" (len $apps) }}</dd></div>
+          <div class="readout-row"><dt class="mono">{{ i18n "readout_code" }}</dt><dd class="mono">{{ printf "%02d" (len $oss) }}</dd></div>
+          <div class="readout-row"><dt class="mono">{{ i18n "readout_stack" }}</dt><dd class="mono">Go · SQL · Cloud · LLM</dd></div>
+          <div class="readout-row"><dt class="mono">{{ i18n "readout_status" }}</dt><dd class="mono readout-online"><span class="status-dot" aria-hidden="true"></span>{{ i18n "readout_online" }}</dd></div>
+        </dl>
+        <noscript><p class="t-line t-warn">{{ i18n "terminal_noscript" }}</p></noscript>
+      </div>
+      <div class="terminal-prompt">
+        <label class="t-prompt mono" for="terminal-input">ondra@ondralinek:~$</label>
+        <input id="terminal-input" class="t-input mono" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="{{ i18n "terminal_input" }}" placeholder="{{ i18n "terminal_placeholder" }}">
+        <span class="t-caret" aria-hidden="true"></span>
+      </div>
     </aside>
   </div>
 </section>
@@ -122,4 +144,8 @@
     </aside>
   </div>
 </section>
+{{ end }}
+{{ define "scripts" }}
+{{- $js := resources.Get "js/terminal.js" | minify | fingerprint "sha256" }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
 {{ end }}

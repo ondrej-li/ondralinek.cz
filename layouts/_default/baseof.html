@@ -12,5 +12,6 @@
   {{ partial "footer.html" . }}
   {{ $js := resources.Get "js/main.js" | minify | fingerprint "sha256" }}
   <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+  {{ block "scripts" . }}{{ end }}
 </body>
 </html>

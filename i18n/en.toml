@@ -7,6 +7,21 @@ other = "The link may be old, or the page has moved. Everything I run is on the 
 [not_found_cta]
 other = "Back to the index"
 
+[terminal_label]
+other = "Interactive console"
+[terminal_output]
+other = "Console output"
+[terminal_input]
+other = "Terminal command"
+[terminal_placeholder]
+other = "type help"
+[terminal_boot]
+other = "ondralinek.cz — interactive shell"
+[terminal_hint]
+other = "Type `help` for commands, `hangman` for a game."
+[terminal_noscript]
+other = "The console needs JavaScript; the index above still works."
+
 [skip]
 other = "Skip to content"
 
