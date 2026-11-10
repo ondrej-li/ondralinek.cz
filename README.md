@@ -63,9 +63,13 @@ omitted when the file is missing, so a build without network still works.
 
 ## Console and ZX Spectrum
 
-The hero is a small interactive shell. `help`, `ls`, `cd`, `cat`, `tree`, `open`,
-`neofetch`, `hangman` and the site/app/tool listings all work; project rows and
-tree entries are clickable and open in a new tab.
+A full-width interactive shell sits below the hero and boots by running `ls`,
+showing `sites/`, `apps/` and `tools/` with their entry counts. Folders are
+clickable; `cd sites` enters the site folder, and `cd kcna` (or a click on a
+site) opens it in a new tab. `ls`, `cd sites/kcna`, `cat`, `open`, `tree` and
+`neofetch` work too, and Tab completes commands, folders and project names.
+Hangman survives as a hidden easter egg (type `hangman`), and `self-destruct`
+starts a millisecond countdown that removes the console when it reaches zero.
 
 `zx` (or `spectrum`, or the **Shell / ZX 48K** switch in the terminal bar) boots
 a simulated ZX Spectrum 48K: a 32×24 character screen with the Spectrum palette,
@@ -75,19 +79,22 @@ BASIC interpreter with `PRINT`, `LET`, `IF/THEN/ELSE`, `FOR/NEXT`, `GOTO`,
 program). `SHELL` or Escape returns to the console. BASIC keywords stay English
 on both language versions, as they were on the original machine.
 
-The shell's project commands are available in BASIC too: `SITES`, `APPS`,
-`TOOLS`, `GOTO SITES/APPS/TOOLS`, `GOTO <name>`, `CAT <name>`, `WHOAMI`,
-`ABOUT`, `CONTACT`, `GITHUB`, `CV`, `LS` and `TREE`. `OPEN <name>` or `OPEN <n>`
-(from the last list) opens the site/app/tool in a new tab; `GOTO <name>` shows
-its details on the Spectrum screen, and `GOTO <n>` selects from the last list
-when no BASIC line with that number exists.
+The shell's project commands are available in BASIC too: `LS`, `CD SITES` /
+`CD APPS` / `CD TOOLS`, `CD <name>`, `CD <n>`, `SITES`, `APPS`, `TOOLS`,
+`GOTO SITES/APPS/TOOLS`, `GOTO <name>`, `CAT <name>`, `WHOAMI`, `ABOUT`,
+`CONTACT`, `GITHUB`, `CV` and `TREE`. `OPEN <name>` or `OPEN <n>` (from the last
+list) opens the site/app/tool in a new tab; `CD <name>` / `CD <n>` opens it as
+well, `GOTO <name>` shows its details on the Spectrum screen, and `GOTO <n>`
+selects from the last list when no BASIC line with that number exists. Tab
+completes BASIC keywords, directories and project names.
 
 ## Structure
 
 ```
 assets/css/main.css        the whole design (dark, grid-based, no frameworks)
 assets/js/main.js          scroll reveal + mobile menu
-assets/js/terminal.js      shell commands, project links, hangman
+assets/js/terminal.js      shell commands, project links, self-destruct
+assets/js/contact.js       contact form → mailto
 assets/js/zx.js            ZX Spectrum screen, palette and BASIC interpreter
 assets/images/apps/        optimised app icons (WebP)
 assets/images/shots/       optimised screenshots (WebP)

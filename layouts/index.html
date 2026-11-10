@@ -17,21 +17,27 @@
 {{- $terminal := dict "lang" site.Language.Lang "sites" $sitesT "apps" $appsT "tools" $toolsT "links" (dict "github" site.Params.github "email" site.Params.email "cv" site.Params.cv) -}}
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="wrap hero-grid">
+  <div class="wrap wrap--wide hero-grid">
     <div class="hero-copy" data-reveal>
       <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>{{ i18n "hero_eyebrow" }}</p>
       <h1 class="hero-title">
         <span class="hero-line">{{ i18n "hero_title_1" }}</span>
         <span class="hero-line hero-line--grad">{{ i18n "hero_title_2" }}</span>
       </h1>
-      <p class="lede">{{ i18n "hero_lede" }}</p>
+    </div>
+    <div class="hero-intro" data-reveal>
+      <p class="lede">{{ i18n "hero_lede" }} <a href="#contact">{{ i18n "hero_lede_link" }}</a>{{ i18n "hero_lede_end" }}</p>
       <p class="cta-row">
         <a class="btn btn-primary" href="#sites">{{ i18n "hero_cta_sites" }}{{ partial "icon.html" "arrow" }}</a>
         <a class="btn" href="#apps">{{ i18n "hero_cta_apps" }}</a>
         <a class="btn btn-ghost" href="{{ site.Params.github }}" rel="me">{{ partial "icon.html" "github" }}GitHub</a>
       </p>
     </div>
+  </div>
+</section>
 
+<section class="console-band" aria-label="{{ i18n "terminal_label" }}">
+  <div class="console-wrap">
     <aside class="terminal" data-terminal="{{ $terminal | jsonify }}" data-mode="shell" data-reveal aria-label="{{ i18n "terminal_label" }}">
       <div class="terminal-bar">
         <span class="terminal-lights" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -45,14 +51,6 @@
       <div class="terminal-shell">
         <div class="terminal-out" role="log" aria-live="polite" aria-label="{{ i18n "terminal_output" }}">
           <p class="t-line t-dim">{{ i18n "terminal_boot" }}</p>
-          <p class="t-line t-dim">{{ i18n "terminal_hint" }}</p>
-          <dl class="readout-list">
-            <div class="readout-row"><dt class="mono">{{ i18n "readout_sites" }}</dt><dd class="mono">{{ printf "%02d" (len $sites) }}</dd></div>
-            <div class="readout-row"><dt class="mono">{{ i18n "readout_apps" }}</dt><dd class="mono">{{ printf "%02d" (len $apps) }}</dd></div>
-            <div class="readout-row"><dt class="mono">{{ i18n "readout_code" }}</dt><dd class="mono">{{ printf "%02d" (len $oss) }}</dd></div>
-            <div class="readout-row"><dt class="mono">{{ i18n "readout_stack" }}</dt><dd class="mono">Go · SQL · Cloud · LLM</dd></div>
-            <div class="readout-row"><dt class="mono">{{ i18n "readout_status" }}</dt><dd class="mono readout-online"><span class="status-dot" aria-hidden="true"></span>{{ i18n "readout_online" }}</dd></div>
-          </dl>
           <noscript><p class="t-line t-warn">{{ i18n "terminal_noscript" }}</p></noscript>
         </div>
         <div class="terminal-prompt">
@@ -85,7 +83,7 @@
 </div>
 
 <section class="section" id="sites">
-  <div class="wrap">
+  <div class="wrap wrap--wide">
     <header class="section-head" data-reveal>
       <p class="kicker mono">{{ i18n "section_sites_kicker" }}</p>
       <h2>{{ i18n "section_sites_title" }}</h2>
@@ -100,7 +98,7 @@
 </section>
 
 <section class="section section--alt" id="apps">
-  <div class="wrap">
+  <div class="wrap wrap--wide">
     <header class="section-head" data-reveal>
       <p class="kicker mono">{{ i18n "section_apps_kicker" }}</p>
       <h2>{{ i18n "section_apps_title" }}</h2>
@@ -115,7 +113,7 @@
 </section>
 
 <section class="section" id="code">
-  <div class="wrap">
+  <div class="wrap wrap--wide">
     <header class="section-head" data-reveal>
       <p class="kicker mono">{{ i18n "section_code_kicker" }}</p>
       <h2>{{ i18n "section_code_title" }}</h2>
@@ -140,7 +138,7 @@
       <p class="about-lead">{{ i18n "about_p1" }}</p>
       <p class="about-text">{{ i18n "about_p2" }}</p>
     </div>
-    <aside class="contact-card" data-reveal>
+    <aside class="contact-card" id="contact" data-reveal>
       <p class="contact-title mono">{{ i18n "contact_heading" }}</p>
       <a class="contact-row" href="mailto:{{ site.Params.email }}">
         <span class="contact-label mono">{{ i18n "contact_email" }}</span>
@@ -158,6 +156,19 @@
         {{ partial "icon.html" "arrow" }}
       </a>
       <p class="contact-note">{{ i18n "contact_note" }}</p>
+      <form class="contact-form" action="mailto:{{ site.Params.email }}" method="post" enctype="text/plain" data-contact-form data-contact-email="{{ site.Params.email }}">
+        <div class="contact-field">
+          <label class="contact-label mono" for="contact-subject">{{ i18n "contact_subject" }}</label>
+          <input class="contact-input" id="contact-subject" name="subject" type="text" required maxlength="120" autocomplete="off" placeholder="{{ i18n "contact_subject_placeholder" }}">
+        </div>
+        <div class="contact-field">
+          <label class="contact-label mono" for="contact-body">{{ i18n "contact_body" }}</label>
+          <textarea class="contact-input contact-textarea" id="contact-body" name="body" rows="4" required maxlength="4000" placeholder="{{ i18n "contact_body_placeholder" }}"></textarea>
+        </div>
+        <button class="btn btn-primary contact-submit" type="submit">{{ i18n "contact_send" }}{{ partial "icon.html" "arrow" }}</button>
+        <p class="contact-hint">{{ i18n "contact_form_hint" }}</p>
+        <noscript><p class="contact-hint contact-hint--warn">{{ i18n "contact_noscript" }}</p></noscript>
+      </form>
     </aside>
   </div>
 </section>
@@ -167,4 +178,6 @@
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
 {{- $zx := resources.Get "js/zx.js" | minify | fingerprint "sha256" }}
 <script src="{{ $zx.RelPermalink }}" integrity="{{ $zx.Data.Integrity }}" defer></script>
+{{- $contact := resources.Get "js/contact.js" | minify | fingerprint "sha256" }}
+<script src="{{ $contact.RelPermalink }}" integrity="{{ $contact.Data.Integrity }}" defer></script>
 {{ end }}

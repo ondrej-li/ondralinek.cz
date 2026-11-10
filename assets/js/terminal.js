@@ -21,11 +21,11 @@
   const S = {
     en: {
       helpTitle: 'Available commands',
-      helpHint: 'Tab completes commands; Up/Down walks the history.',
+      helpHint: 'Tab completes commands, folders and projects; Up/Down walks the history.',
       help: [
         ['help', 'this list'],
-        ['ls [dir]', 'list sites, apps and tools'],
-        ['cd <dir>', 'sites | apps | tools | .. | ~'],
+        ['ls [dir]', 'list folders and their entry counts'],
+        ['cd <dir|name>', 'enter a folder or open a project'],
         ['pwd', 'print the current directory'],
         ['cat <name>', 'read a project, about.txt or contact.txt'],
         ['tree', 'print the whole index'],
@@ -34,7 +34,6 @@
         ['whoami · about', 'who is behind this'],
         ['github', 'open the GitHub profile'],
         ['contact', 'e-mail, GitHub, CV'],
-        ['hangman', 'play hangman'],
         ['zx · spectrum', 'boot the ZX Spectrum 48K'],
         ['date · uname · neofetch · uptime', 'system information'],
         ['echo <text>', 'print text'],
@@ -44,8 +43,8 @@
         ['exit', 'try it'],
       ],
       notFound: (cmd) => `command not found: ${cmd}. Type "help".`,
-      lsDirs: 'sites/   apps/   tools/',
       lsFiles: 'about.txt   contact.txt   README.md',
+      entries: (n) => `${String(n).padStart(2, '0')} entries`,
       dirNotFound: (dir) => `cd: no such directory: ${dir}`,
       catUsage: 'usage: cat <site|app|tool|about.txt|contact.txt>',
       catNotFound: (name) => `cat: no such file or directory: ${name}`,
@@ -86,6 +85,16 @@
       stack: 'Go · SQL · Cloud · LLM',
       unameAll: 'Linux ondralinek.cz 6.12.115-2 #1 SMP PREEMPT_DYNAMIC Debian 6.12.115-2 aarch64 GNU/Linux',
       uptime: (up) => `up ${up}, 1 user, load average: 0.00, 0.00, 0.00`,
+      selfDestruct: {
+        header: 'NOSTROMO / EMERGENCY DESTRUCT SYSTEM',
+        warning: 'SELF-DESTRUCT SEQUENCE INITIATED',
+        coolant: 'COOLANT PURGE: COMPLETE',
+        vent: 'EMERGENCY VENT: OPEN',
+        armed: 'DETONATION IN',
+        critical: 'CONTAINMENT FAILURE — DETONATION IN',
+        detonate: 'DETONATION',
+        hint: 'No input accepted. This console will be removed at zero.',
+      },
       hangman: {
         title: 'HANGMAN',
         intro: 'Guess the word one letter at a time. Six wrong guesses allowed.',
@@ -107,11 +116,11 @@
     },
     cs: {
       helpTitle: 'Dostupné příkazy',
-      helpHint: 'Tab doplňuje příkazy; nahoru/dolů prochází historii.',
+      helpHint: 'Tab doplňuje příkazy, složky i projekty; nahoru/dolů prochází historii.',
       help: [
         ['help', 'tento seznam'],
-        ['ls [adresář]', 'vypíše weby, aplikace a nástroje'],
-        ['cd <adresář>', 'sites | apps | tools | .. | ~'],
+        ['ls [adresář]', 'vypíše složky a počty položek'],
+        ['cd <adresář|název>', 'vstoupí do složky nebo otevře projekt'],
         ['pwd', 'vypíše aktuální adresář'],
         ['cat <název>', 'přečte projekt, about.txt nebo contact.txt'],
         ['tree', 'vypíše celý index'],
@@ -120,7 +129,6 @@
         ['whoami · about', 'kdo za tím stojí'],
         ['github', 'otevře profil na GitHubu'],
         ['contact', 'e-mail, GitHub, CV'],
-        ['hangman', 'zahraje hangmana'],
         ['zx · spectrum', 'spustí ZX Spectrum 48K'],
         ['date · uname · neofetch · uptime', 'systémové informace'],
         ['echo <text>', 'vypíše text'],
@@ -130,8 +138,8 @@
         ['exit', 'zkuste to'],
       ],
       notFound: (cmd) => `příkaz nenalezen: ${cmd}. Zkuste "help".`,
-      lsDirs: 'sites/   apps/   tools/',
       lsFiles: 'about.txt   contact.txt   README.md',
+      entries: (n) => `${String(n).padStart(2, '0')} položek`,
       dirNotFound: (dir) => `cd: adresář neexistuje: ${dir}`,
       catUsage: 'použití: cat <web|aplikace|nástroj|about.txt|contact.txt>',
       catNotFound: (name) => `cat: soubor nebo adresář neexistuje: ${name}`,
@@ -172,6 +180,16 @@
       stack: 'Go · SQL · Cloud · LLM',
       unameAll: 'Linux ondralinek.cz 6.12.115-2 #1 SMP PREEMPT_DYNAMIC Debian 6.12.115-2 aarch64 GNU/Linux',
       uptime: (up) => `up ${up}, 1 uživatel, load average: 0.00, 0.00, 0.00`,
+      selfDestruct: {
+        header: 'NOSTROMO / NOUZOVÝ DESTRUKČNÍ SYSTÉM',
+        warning: 'SEKVENCE SEBEDESTRUKCE SPUŠTĚNA',
+        coolant: 'ODPOUŠTĚNÍ CHLADIVA: HOTOVO',
+        vent: 'NOUZOVÉ OTVORY: OTEVŘENY',
+        armed: 'DETONACE ZA',
+        critical: 'SELHÁNÍ KONTROLY — DETONACE ZA',
+        detonate: 'DETONACE',
+        hint: 'Příkazy nejsou přijímány. Konzole zmizí v nule.',
+      },
       hangman: {
         title: 'HANGMAN',
         intro: 'Hádejte slovo po jednom písmenu. Šest chybných pokusů.',
@@ -195,7 +213,7 @@
 
   const COMMANDS = [
     'help', 'ls', 'cd', 'pwd', 'cat', 'tree', 'open', 'sites', 'apps', 'tools',
-    'whoami', 'about', 'github', 'contact', 'hangman', 'zx', 'spectrum',
+    'whoami', 'about', 'github', 'contact', 'zx', 'spectrum',
     'date', 'uname', 'neofetch', 'uptime', 'echo', 'history', 'clear', 'sudo',
     'exit', 'rm', 'projects', 'me',
   ];
@@ -206,6 +224,7 @@
   let histIndex = 0;
   let game = null;
   let currentPrompt = '';
+  let destroying = false;
   const started = Date.now();
 
   function el(tag, cls, text) {
@@ -268,6 +287,15 @@
     scroll();
   }
 
+  function folderRow(label, count, dir) {
+    const row = el('button', 't-row t-row-link t-row-button');
+    row.type = 'button';
+    row.dataset.cd = dir;
+    row.append(el('span', 't-row-key', label), el('span', 't-row-val', S.entries(count)));
+    out.appendChild(row);
+    scroll();
+  }
+
   function blank() {
     line('', 't-block');
   }
@@ -304,19 +332,32 @@
     return null;
   }
 
+  function itemsFor(dir) {
+    const entries = [];
+    if (dir === '~/sites') {
+      for (const site of data.sites || []) {
+        entries.push({ type: 'site', key: site.domain, item: site, values: [site.domain, site.name, site.url] });
+      }
+    } else if (dir === '~/apps') {
+      for (const app of data.apps || []) {
+        entries.push({ type: 'app', key: app.id, item: app, values: [app.id, app.name, app.site, app.repo, app.store] });
+      }
+    } else if (dir === '~/tools') {
+      for (const tool of data.tools || []) {
+        entries.push({ type: 'tool', key: tool.name, item: tool, values: [tool.name, tool.repo] });
+      }
+    }
+    return entries;
+  }
+
+  function allItems() {
+    return [...itemsFor('~/sites'), ...itemsFor('~/apps'), ...itemsFor('~/tools')];
+  }
+
   function findItems(query) {
     const q = String(query || '').toLowerCase().replace(/^["']|["']$/g, '').replace(/\/+$/, '');
     if (!q) return [];
-    const all = [];
-    for (const site of data.sites || []) {
-      all.push({ type: 'site', key: site.domain, item: site, values: [site.domain, site.name, site.url] });
-    }
-    for (const app of data.apps || []) {
-      all.push({ type: 'app', key: app.id, item: app, values: [app.id, app.name, app.site, app.repo] });
-    }
-    for (const tool of data.tools || []) {
-      all.push({ type: 'tool', key: tool.name, item: tool, values: [tool.name, tool.repo] });
-    }
+    const all = allItems();
     const clean = (values) => values.filter(Boolean).map((v) => String(v).toLowerCase());
     const exact = all.filter((entry) => clean(entry.values).includes(q));
     if (exact.length) return exact;
@@ -398,7 +439,9 @@
 
   function listDirectory(dir) {
     if (dir === '~') {
-      line(S.lsDirs, 't-accent');
+      folderRow('sites/', (data.sites || []).length, 'sites');
+      folderRow('apps/', (data.apps || []).length, 'apps');
+      folderRow('tools/', (data.tools || []).length, 'tools');
       line(S.lsFiles, 't-dim');
     } else if (dir === '~/sites') {
       (data.sites || []).forEach((site) => kvRowLink(site.domain, site.name, site.url));
@@ -569,6 +612,125 @@
     scroll();
   }
 
+  function formatDestruct(ms) {
+    const total = Math.max(0, Math.ceil(ms));
+    const minutes = Math.floor(total / 60000);
+    const seconds = Math.floor((total % 60000) / 1000);
+    const millis = total % 1000;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+  }
+
+  function startSelfDestruct() {
+    if (destroying) return;
+    destroying = true;
+    game = null;
+    input.disabled = true;
+    input.blur();
+    root.classList.add('is-countdown');
+    root.setAttribute('aria-busy', 'true');
+    clearOut();
+
+    const panel = el('div', 't-destruct');
+    panel.appendChild(el('p', 't-destruct-kicker mono', S.selfDestruct.header));
+    panel.appendChild(el('p', 't-destruct-title mono', S.selfDestruct.warning));
+    const log = el('div', 't-destruct-log mono');
+    log.append(el('p', '', S.selfDestruct.coolant), el('p', '', S.selfDestruct.vent));
+    panel.appendChild(log);
+    const state = el('p', 't-destruct-state mono', S.selfDestruct.armed);
+    const clock = el('div', 't-countdown mono', '00:10.000');
+    clock.setAttribute('role', 'timer');
+    panel.append(state, clock, el('p', 't-destruct-hint', S.selfDestruct.hint));
+    out.appendChild(panel);
+    scroll();
+
+    const duration = 10000;
+    const startedAt = performance.now();
+    let timer = 0;
+    const tick = () => {
+      const remaining = duration - (performance.now() - startedAt);
+      if (remaining <= 0) {
+        window.clearInterval(timer);
+        clock.textContent = formatDestruct(0);
+        state.textContent = S.selfDestruct.detonate;
+        panel.classList.add('is-detonated');
+        root.classList.add('is-detonated');
+        window.setTimeout(() => {
+          root.classList.add('is-destroyed');
+          const band = root.closest('.console-band');
+          const remove = () => {
+            if (root.isConnected) root.remove();
+            if (band && band.isConnected) band.remove();
+          };
+          root.addEventListener('animationend', (event) => {
+            if (event.animationName === 'destruct-collapse') remove();
+          });
+          window.setTimeout(remove, 1600);
+        }, 450);
+        return;
+      }
+      clock.textContent = formatDestruct(remaining);
+      if (remaining < 3000) {
+        panel.classList.add('is-critical');
+        state.textContent = S.selfDestruct.critical;
+      }
+    };
+    timer = window.setInterval(tick, 16);
+    tick();
+  }
+
+  function openProject(query) {
+    const matches = findItems(query);
+    if (!matches.length) return false;
+    if (matches.length > 1) printMatches(matches);
+    else openMatch(matches[0]);
+    return true;
+  }
+
+  function openCurrent(query) {
+    if (cwd === '~') return false;
+    const type = cwd === '~/sites' ? 'site' : cwd === '~/apps' ? 'app' : 'tool';
+    const matches = findItems(query).filter((entry) => entry.type === type);
+    if (!matches.length) return false;
+    if (matches.length > 1) printMatches(matches);
+    else openMatch(matches[0]);
+    return true;
+  }
+
+  function changeDirectory(arg) {
+    const clean = String(arg || '').trim().replace(/^["']|["']$/g, '').replace(/\/+$/, '');
+    if (!clean || clean === '~' || clean === '/') {
+      cwd = '~';
+      return;
+    }
+    if (clean === '.') return;
+    if (clean === '..') {
+      cwd = '~';
+      return;
+    }
+    if (clean.startsWith('../')) {
+      const dir = resolveDir(clean.slice(3));
+      if (dir) {
+        cwd = dir;
+        return;
+      }
+    }
+    const dir = resolveDir(clean);
+    if (dir) {
+      cwd = dir;
+      return;
+    }
+    const segments = clean.split('/').filter(Boolean);
+    if (segments.length > 1) {
+      const base = resolveDir(segments[0]);
+      if (base) {
+        cwd = base;
+        if (!openProject(segments.slice(1).join('/'))) line(S.dirNotFound(clean), 't-err');
+        return;
+      }
+    }
+    if (!openProject(clean)) line(S.dirNotFound(clean), 't-err');
+  }
+
   function run(raw) {
     const trimmed = raw.trim();
     if (!trimmed) {
@@ -599,15 +761,9 @@
         }
         break;
       }
-      case 'cd': {
-        const dir = resolveDir(positional[0]);
-        if (dir === null) {
-          line(S.dirNotFound(positional[0] || ''), 't-err');
-        } else {
-          cwd = dir;
-        }
+      case 'cd':
+        changeDirectory(positional[0]);
         break;
-      }
       case 'pwd':
         line(cwd);
         break;
@@ -679,6 +835,9 @@
       case 'contact':
         printContact();
         break;
+      case 'self-destruct':
+        startSelfDestruct();
+        break;
       case 'hangman':
         startHangman();
         break;
@@ -739,20 +898,74 @@
         line(S.exit, 't-warn');
         break;
       default:
-        line(S.notFound(parts[0]), 't-err');
+        if (!openCurrent(parts[0])) line(S.notFound(parts[0]), 't-err');
     }
 
     setPrompt(game ? S.hangman.prompt : defaultPrompt());
     scroll();
   }
 
+  function commonPrefix(values) {
+    if (!values.length) return '';
+    let prefix = values[0];
+    for (const value of values.slice(1)) {
+      while (prefix && !value.toLowerCase().startsWith(prefix.toLowerCase())) prefix = prefix.slice(0, -1);
+    }
+    return prefix;
+  }
+
+  function completionCandidates(command, token) {
+    const dirs = cwd === '~' ? ['sites/', 'apps/', 'tools/', '..', '~'] : ['..', '~'];
+    if (command === 'cd') {
+      const slash = token.lastIndexOf('/');
+      if (slash >= 0) {
+        const dir = resolveDir(token.slice(0, slash));
+        if (dir) {
+          const prefix = token.slice(0, slash + 1);
+          return itemsFor(dir).map((entry) => prefix + entry.key);
+        }
+      }
+      return [...dirs, ...itemsFor(cwd).map((entry) => entry.key)];
+    }
+    if (command === 'ls' || command === 'dir' || command === 'projects') return dirs;
+    if (command === 'cat') return ['about.txt', 'contact.txt', 'README.md', ...allItems().map((entry) => entry.key)];
+    if (command === 'open') return allItems().map((entry) => entry.key);
+    return [];
+  }
+
   function complete() {
+    if (game) return;
     const value = input.value;
-    if (!value || value.includes(' ')) return;
-    const matches = COMMANDS.filter((command) => command.startsWith(value));
+    if (!value) return;
+    const argument = value.match(/^(\S+)(\s+)(.*)$/);
+    if (!argument) {
+      const commands = cwd === '~' ? COMMANDS : [...COMMANDS, ...itemsFor(cwd).map((entry) => entry.key)];
+      const matches = commands.filter((command) => command.startsWith(value.toLowerCase()));
+      if (matches.length === 1) {
+        input.value = matches[0] + ' ';
+      } else if (matches.length > 1) {
+        line(matches.join('  '), 't-dim');
+      }
+      return;
+    }
+    const command = argument[1].toLowerCase();
+    const text = argument[3];
+    const token = text.split(/\s+/).pop() || '';
+    const base = value.slice(0, value.length - token.length);
+    const matches = completionCandidates(command, token).filter((candidate) =>
+      candidate.toLowerCase().startsWith(token.toLowerCase()),
+    );
+    if (!matches.length) return;
     if (matches.length === 1) {
-      input.value = matches[0] + ' ';
-    } else if (matches.length > 1) {
+      input.value = base + matches[0] + (matches[0].endsWith('/') ? '' : ' ');
+      input.setSelectionRange(input.value.length, input.value.length);
+      return;
+    }
+    const common = commonPrefix(matches);
+    if (common.length > token.length) {
+      input.value = base + common;
+      input.setSelectionRange(input.value.length, input.value.length);
+    } else {
       line(matches.join('  '), 't-dim');
     }
   }
@@ -803,7 +1016,23 @@
     }
   });
 
+  function bootShell() {
+    setPrompt(defaultPrompt());
+    echo('ls');
+    listDirectory('~');
+    setPrompt(defaultPrompt());
+    scroll();
+  }
+
   root.addEventListener('click', (event) => {
+    const folder = event.target.closest('[data-cd]');
+    if (folder) {
+      event.preventDefault();
+      run(`cd ${folder.dataset.cd}`);
+      run('ls');
+      input.focus();
+      return;
+    }
     if (event.target.closest('a, button')) return;
     if (root.dataset.mode === 'zx') return;
     input.focus();
@@ -811,5 +1040,5 @@
 
   input.addEventListener('focus', scroll);
 
-  setPrompt(defaultPrompt());
+  bootShell();
 })();

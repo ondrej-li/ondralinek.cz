@@ -18,7 +18,7 @@ other = "napište help"
 [terminal_boot]
 other = "ondralinek.cz — interaktivní shell"
 [terminal_hint]
-other = "Napište `help` pro příkazy, `hangman` pro hru."
+other = "Napište `help` pro příkazy."
 [terminal_noscript]
 other = "Konzole potřebuje JavaScript; index výše funguje i bez něj."
 [terminal_mode_label]
@@ -60,7 +60,11 @@ other = "Weby, aplikace a nástroje"
 [hero_title_2]
 other = "v provozu."
 [hero_lede]
-other = "Jsem Ondra Linek. Stavím backendové systémy v Go a nativní aplikace pro platformy Apple ve Swiftu. Tohle je mapa všeho, co provozuju — živé weby, aplikace a kód za nimi."
+other = "Vítejte. Tohle je můj osobní web. Rozhlédněte se, prohlédněte si moje weby, aplikace a nástroje. Vždycky mám radost z nových nápadů a rád se s vámi"
+[hero_lede_link]
+other = "spojím"
+[hero_lede_end]
+other = "."
 [hero_cta_apps]
 other = "Prohlédnout aplikace"
 [hero_cta_sites]
@@ -122,6 +126,20 @@ other = "GitHub"
 other = "CV a praxe"
 [contact_note]
 other = "Otevřený spolupráci, novým projektům a nápadům, které stojí za to postavit."
+[contact_subject]
+other = "Předmět"
+[contact_subject_placeholder]
+other = "Projekt, nápad, nebo jen pozdrav"
+[contact_body]
+other = "Zpráva"
+[contact_body_placeholder]
+other = "Napište, co máte na mysli…"
+[contact_send]
+other = "Otevřít e-mailový klient"
+[contact_form_hint]
+other = "Otevře se výchozí e-mailový klient s připravenou zprávou."
+[contact_noscript]
+other = "JavaScript je vypnutý — použijte e-mailový odkaz výše."
 
 [status_live]
 other = "App Store"

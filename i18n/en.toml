@@ -18,7 +18,7 @@ other = "type help"
 [terminal_boot]
 other = "ondralinek.cz — interactive shell"
 [terminal_hint]
-other = "Type `help` for commands, `hangman` for a game."
+other = "Type `help` for commands."
 [terminal_noscript]
 other = "The console needs JavaScript; the index above still works."
 [terminal_mode_label]
@@ -60,7 +60,11 @@ other = "Sites, apps & tools"
 [hero_title_2]
 other = "running live."
 [hero_lede]
-other = "I'm Ondra Linek. I build backend systems in Go and native apps for Apple platforms in Swift. This is a map of everything I run — the live sites, the apps, and the code behind them."
+other = "Welcome. This is my personal website. Feel free to look around, check out my other sites, apps and tools. I'm always open to new ideas, and would love to"
+[hero_lede_link]
+other = "get in touch"
+[hero_lede_end]
+other = "."
 [hero_cta_apps]
 other = "Explore the apps"
 [hero_cta_sites]
@@ -122,6 +126,20 @@ other = "GitHub"
 other = "CV & experience"
 [contact_note]
 other = "Open to collaboration, new projects and ideas worth building."
+[contact_subject]
+other = "Subject"
+[contact_subject_placeholder]
+other = "Project, idea, or just hello"
+[contact_body]
+other = "Message"
+[contact_body_placeholder]
+other = "Tell me what you have in mind…"
+[contact_send]
+other = "Open email client"
+[contact_form_hint]
+other = "This opens your default mail app with the message ready to send."
+[contact_noscript]
+other = "JavaScript is off — use the e-mail link above."
 
 [status_live]
 other = "App Store"

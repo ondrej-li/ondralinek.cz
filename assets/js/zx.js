@@ -62,7 +62,10 @@
       usageCat: 'USAGE: CAT <NAME>',
       specific: 'BE MORE SPECIFIC',
       visit: (name) => `OPEN ${name} TO VISIT`,
-      ls: ['SITES/  APPS/  TOOLS/', 'ABOUT  CONTACT  README', 'GOTO SITES TO START'],
+      lsHint: 'CD SITES  APPS  TOOLS',
+      cdHint: 'CD <N> OR CD <NAME>',
+      files: 'ABOUT  CONTACT  README',
+      entries: (n) => `${String(n).padStart(2, '0')} ENTRIES`,
     },
     cs: {
       whoami: 'Ondra Linek — inženýr. Stavím Go backendy a nativní aplikace pro platformy Apple a zůstávám odpovědný za výsledek od nápadu po provoz.',
@@ -80,7 +83,10 @@
       usageCat: 'POUZITI: CAT <JMENO>',
       specific: 'UPŘESNĚTE',
       visit: (name) => `OPEN ${name} PRO OTEVRENI`,
-      ls: ['SITES/  APPS/  TOOLS/', 'ABOUT  CONTACT  README', 'GOTO SITES TO START'],
+      lsHint: 'CD SITES  APPS  TOOLS',
+      cdHint: 'CD <N> NEBO CD <JMENO>',
+      files: 'ABOUT  CONTACT  README',
+      entries: (n) => `${String(n).padStart(2, '0')} POLOZEK`,
     },
   };
   const T = TEXT[lang];
@@ -141,6 +147,7 @@
   let booted = false;
   let lastPlot = { x: 0, y: 0 };
   let lastList = [];
+  let zxDir = '~';
   let zxHistory = [];
   let zxHistIndex = 0;
 
@@ -431,6 +438,64 @@
   input.addEventListener('input', syncInput);
   input.addEventListener('focus', renderInput);
 
+  function zxCommonPrefix(values) {
+    if (!values.length) return '';
+    let prefix = values[0];
+    for (const value of values.slice(1)) {
+      while (prefix && !value.startsWith(prefix)) prefix = prefix.slice(0, -1);
+    }
+    return prefix;
+  }
+
+  function zxCompletionCandidates(command, token) {
+    const dirs = zxDir === '~' ? ['SITES', 'APPS', 'TOOLS', '..', '~'] : ['..', '~'];
+    if (command === 'CD') {
+      const slash = token.lastIndexOf('/');
+      if (slash >= 0) {
+        const base = token.slice(0, slash);
+        const dir = base === 'SITES' ? '~/sites' : base === 'APPS' ? '~/apps' : base === 'TOOLS' ? '~/tools' : '';
+        if (dir) {
+          const prefix = token.slice(0, slash + 1);
+          return projectsInDir(dir).map((project) => prefix + project.label.toUpperCase());
+        }
+      }
+      return [...dirs, ...projectsInDir(zxDir).map((project) => project.label.toUpperCase())];
+    }
+    if (command === 'LS' || command === 'DIR') return dirs;
+    if (command === 'OPEN' || command === 'CAT') return PROJECTS.map((project) => project.label.toUpperCase());
+    return [];
+  }
+
+  function zxComplete() {
+    const value = input.value;
+    if (!value) return;
+    const argument = value.match(/^(\S+)(\s+)(.*)$/);
+    if (!argument) {
+      const keywords = zxDir === '~'
+        ? ZX_KEYWORDS
+        : [...ZX_KEYWORDS, ...projectsInDir(zxDir).map((project) => project.label.toUpperCase())];
+      const matches = keywords.filter((keyword) => keyword.startsWith(value.toUpperCase()));
+      if (matches.length === 1) {
+        input.value = matches[0] + ' ';
+        renderInput();
+      }
+      return;
+    }
+    const command = argument[1].toUpperCase();
+    const token = (argument[3].split(/\s+/).pop() || '').toUpperCase();
+    const base = value.slice(0, value.length - token.length);
+    const matches = zxCompletionCandidates(command, token).filter((candidate) => candidate.startsWith(token));
+    if (!matches.length) return;
+    if (matches.length === 1) {
+      input.value = base + matches[0] + ' ';
+    } else {
+      const common = zxCommonPrefix(matches);
+      if (common.length <= token.length) return;
+      input.value = base + common;
+    }
+    renderInput();
+  }
+
   input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -457,13 +522,7 @@
     }
     if (event.key === 'Tab') {
       event.preventDefault();
-      const value = input.value;
-      if (!value || value.includes(' ')) return;
-      const matches = ZX_KEYWORDS.filter((keyword) => keyword.startsWith(value.toUpperCase()));
-      if (matches.length === 1) {
-        input.value = matches[0] + ' ';
-        renderInput();
-      }
+      zxComplete();
       return;
     }
     if (event.key.toLowerCase() === 'l' && event.ctrlKey && !event.metaKey) {
@@ -492,12 +551,12 @@
     printAt(4, 5, 'BASIC', { ink: 5, bright: 1 });
     printAt(0, 8, 'TYPE HELP FOR BASIC COMMANDS', { ink: WHITE });
     printAt(0, 9, 'LIST  RUN  NEW  CLS', { ink: WHITE });
-    printAt(0, 10, 'GOTO SITES  APPS  TOOLS', { ink: 5 });
+    printAt(0, 10, 'LS  CD SITES  APPS  TOOLS', { ink: 5 });
     printAt(0, 11, '10 PRINT "HELLO FROM 1982"', { ink: 6 });
     printAt(0, 12, '20 STOP', { ink: 6 });
     printAt(0, 14, 'LOAD "" FOR THE DEMO', { ink: 5 });
     printAt(0, 15, 'SHELL  RETURN TO CONSOLE', { ink: 7 });
-    printAt(0, 16, 'OPEN <NAME> TO VISIT', { ink: 6 });
+    printAt(0, 16, 'CD <NAME>  OPEN <NAME>', { ink: 6 });
     cursor = { x: 0, y: 18 };
     renderPrompt();
     input.value = '';
@@ -875,6 +934,24 @@
     return PROJECTS.filter((project) => project.keys.some((key) => normalizeQuery(key).includes(term)));
   }
 
+  function dirForKind(kind) {
+    if (kind === 'SITE') return '~/sites';
+    if (kind === 'APP') return '~/apps';
+    return '~/tools';
+  }
+
+  function kindForDir(dir) {
+    if (dir === '~/sites') return 'SITE';
+    if (dir === '~/apps') return 'APP';
+    return 'TOOL';
+  }
+
+  function projectsInDir(dir) {
+    if (dir === '~') return [];
+    const kind = kindForDir(dir);
+    return PROJECTS.filter((project) => project.kind === kind);
+  }
+
   function showMatches(matches) {
     lastList = matches;
     clearScreen();
@@ -887,19 +964,27 @@
   }
 
   function showList(kind) {
-    const list = PROJECTS.filter((project) => project.kind === kind);
+    const dir = dirForKind(kind);
+    const list = projectsInDir(dir);
+    zxDir = dir;
     lastList = list;
     clearScreen();
-    printLine(`${kind}S`, { ink: 6, bright: 1 });
+    printLine(`${kind}S  ${T.entries(list.length)}`, { ink: 6, bright: 1 });
     list.forEach((project, index) => {
       printLine(`${index + 1} ${project.label.toUpperCase()}`, attrs);
     });
     blankZXLine();
-    printLine(T.openHint, { ink: 5 });
+    printLine(T.cdHint, { ink: 5 });
   }
 
   function showProject(query) {
-    const matches = findProjects(query);
+    let matches = [];
+    const text = String(query || '').trim();
+    if (/^\d+$/.test(text) && lastList.length) {
+      const index = Number(text) - 1;
+      if (index >= 0 && index < lastList.length) matches = [lastList[index]];
+    }
+    if (!matches.length) matches = findProjects(query);
     if (!matches.length) {
       zxError(T.notFound(query));
       return;
@@ -998,10 +1083,78 @@
   }
 
   function showLs() {
-    lastList = PROJECTS;
     clearScreen();
-    printLine('~', { ink: 6, bright: 1 });
-    T.ls.forEach((text) => printLine(text, attrs));
+    printLine(zxDir, { ink: 6, bright: 1 });
+    if (zxDir === '~') {
+      lastList = [];
+      [
+        ['SITES', '~/sites'],
+        ['APPS', '~/apps'],
+        ['TOOLS', '~/tools'],
+      ].forEach(([kind, dir]) => {
+        printLine(`${kind}/ ${T.entries(projectsInDir(dir).length)}`, attrs);
+      });
+      printLine(T.files, { ink: 5 });
+      blankZXLine();
+      printLine(T.lsHint, { ink: 5 });
+      return;
+    }
+    const list = projectsInDir(zxDir);
+    lastList = list;
+    list.forEach((project, index) => {
+      printLine(`${index + 1} ${project.label.toUpperCase()}`, attrs);
+    });
+    blankZXLine();
+    printLine(T.cdHint, { ink: 5 });
+  }
+
+  function openProjectZX(project) {
+    lastList = [project];
+    if (!project.url) {
+      zxError(T.noLink(project.label));
+      return;
+    }
+    printLine(T.opening(project.url), { ink: 5 });
+    printLine(`CD ${project.label.toUpperCase()}`, attrs);
+    openUrl(project.url);
+  }
+
+  function showCd(target) {
+    const text = normalizeQuery(target).toUpperCase();
+    if (!text || text === '~' || text === '/' || text === '..') {
+      zxDir = '~';
+      showLs();
+      return;
+    }
+    const parts = text.split('/').filter(Boolean);
+    if (parts.length > 1) {
+      if (parts[0] === 'SITES' || parts[0] === 'APPS' || parts[0] === 'TOOLS') {
+        showCd(parts[0]);
+        showCd(parts.slice(1).join('/'));
+        return;
+      }
+    }
+    if (text === 'SITES' || text === 'APPS' || text === 'TOOLS') {
+      showList(text === 'SITES' ? 'SITE' : text === 'APPS' ? 'APP' : 'TOOL');
+      return;
+    }
+    if (/^\d+$/.test(text) && lastList.length) {
+      const index = Number(text) - 1;
+      if (index >= 0 && index < lastList.length) {
+        openProjectZX(lastList[index]);
+        return;
+      }
+    }
+    const matches = findProjects(text);
+    if (!matches.length) {
+      zxError(T.notFound(target));
+      return;
+    }
+    if (matches.length > 1) {
+      showMatches(matches);
+      return;
+    }
+    openProjectZX(matches[0]);
   }
 
   function showTree() {
@@ -1261,6 +1414,8 @@
     }
     if (upper === 'LS' || upper === 'DIR') return { type: 'ls' };
     if (upper.startsWith('LS ')) return { type: 'nav', target: text.slice(3).trim() };
+    if (upper === 'CD') return { type: 'cd', target: '' };
+    if (upper.startsWith('CD ')) return { type: 'cd', target: text.slice(3).trim() };
     if (upper === 'TREE') return { type: 'tree' };
     if (upper === 'OPEN') return { type: 'open', target: '' };
     if (upper.startsWith('OPEN ')) return { type: 'open', target: text.slice(5).trim() };
@@ -1476,6 +1631,9 @@
       case 'ls':
         showLs();
         return null;
+      case 'cd':
+        showCd(statement.target);
+        return null;
       case 'tree':
         showTree();
         return null;
@@ -1501,6 +1659,7 @@
         program.clear();
         vars.clear();
         lastList = [];
+        zxDir = '~';
         state.forStack = [];
         state.gosubStack = [];
         clearScreen();
@@ -1719,8 +1878,8 @@
       '',
       'NAVIGATION',
       'SITES  APPS  TOOLS',
-      'GOTO SITES / APPS / TOOLS',
-      'GOTO <NAME>   OPEN <NAME>',
+      'LS   CD SITES / APPS / TOOLS',
+      'CD <NAME> / CD <N> TO OPEN',
       'GOTO/OPEN 1..N  CAT <NAME>',
       'WHOAMI  ABOUT  CONTACT  GITHUB',
       'SHELL  back to console',
@@ -1746,6 +1905,7 @@
     ];
     program.clear();
     lastList = [];
+    zxDir = '~';
     try {
       demo.forEach(([number, source]) => {
         program.set(number, { number, source, stmts: compileStatements(source) });
@@ -1803,7 +1963,7 @@
     'BORDER', 'PAPER', 'INK', 'BRIGHT', 'FLASH', 'PLOT', 'DRAW', 'CIRCLE',
     'RANDOMIZE', 'REM', 'PAUSE', 'SHELL', 'HELP', 'LOAD', 'SAVE',
     'SITES', 'APPS', 'TOOLS', 'WHOAMI', 'ABOUT', 'CONTACT', 'GITHUB', 'CV',
-    'OPEN', 'CAT', 'LS', 'TREE',
+    'OPEN', 'CAT', 'LS', 'CD', 'TREE',
   ];
 
   pane.hidden = true;

@@ -26,6 +26,7 @@
   --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
   --wrap: 1180px;
+  --console-font: clamp(0.88rem, 0.35vw + 0.74rem, 1rem);
   --radius: 20px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -102,6 +103,11 @@ a {
   max-width: var(--wrap);
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.wrap--wide {
+  max-width: none;
+  padding-inline: clamp(1rem, 2.5vw, 2.5rem);
 }
 
 .mono {
@@ -294,9 +300,28 @@ a {
 .hero-grid {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+}
+
+.hero-copy {
+  max-width: none;
+}
+
+.hero-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero-copy .hero-title {
+  margin-bottom: 0;
+}
+
+.hero-intro .lede {
+  max-width: 72ch;
+  margin-bottom: 1.6rem;
 }
 
 .eyebrow {
@@ -322,8 +347,8 @@ a {
 
 .hero-title {
   margin: 0 0 1.6rem;
-  font-size: clamp(2.4rem, 6.1vw, 5.2rem);
-  line-height: 0.98;
+  font-size: clamp(2.4rem, 12.5vw, 20rem);
+  line-height: 0.92;
   letter-spacing: -0.045em;
   font-weight: 600;
 }
@@ -352,6 +377,17 @@ a {
   color: var(--muted);
   font-size: clamp(1rem, 1.5vw, 1.14rem);
   line-height: 1.7;
+}
+
+.lede a {
+  color: var(--cyan);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+
+.lede a:hover {
+  color: var(--lime);
 }
 
 .cta-row {
@@ -424,11 +460,21 @@ a {
 
 /* -------------------------------------------------------- terminal */
 
+.console-band {
+  position: relative;
+  padding: 0 clamp(1rem, 2.5vw, 2.5rem) clamp(3rem, 5vw, 4.5rem);
+}
+
+.console-wrap {
+  width: 100%;
+}
+
 .terminal {
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
-  height: clamp(380px, 48vh, 470px);
+  height: clamp(440px, 56vh, 560px);
   border: 1px solid var(--line-strong);
   border-radius: 16px;
   background:
@@ -594,8 +640,8 @@ a {
 
 .t-line {
   margin: 0 0 0.12rem;
-  font-size: 0.76rem;
-  line-height: 1.55;
+  font-size: var(--console-font);
+  line-height: 1.6;
   color: var(--text);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -669,8 +715,8 @@ a {
   display: flex;
   gap: 1rem;
   margin: 0 0 0.12rem;
-  font-size: 0.76rem;
-  line-height: 1.5;
+  font-size: var(--console-font);
+  line-height: 1.6;
 }
 
 .t-row-key {
@@ -689,6 +735,16 @@ a {
   text-decoration: none;
 }
 
+.t-row-button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 .t-row-link .t-row-key {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -702,8 +758,8 @@ a {
 
 .t-tree-row {
   font-family: var(--mono);
-  font-size: 0.7rem;
-  line-height: 1.35;
+  font-size: calc(var(--console-font) - 0.08rem);
+  line-height: 1.45;
   white-space: pre;
   color: var(--text);
 }
@@ -829,7 +885,7 @@ a {
 .t-prompt {
   flex: none;
   color: var(--lime);
-  font-size: 0.72rem;
+  font-size: var(--console-font);
   white-space: nowrap;
 }
 
@@ -841,7 +897,7 @@ a {
   background: transparent;
   color: var(--text);
   font: inherit;
-  font-size: 0.78rem;
+  font-size: var(--console-font);
   letter-spacing: 0.01em;
   outline: none;
 }
@@ -864,6 +920,127 @@ a {
 
 .terminal:focus-within .t-caret {
   visibility: hidden;
+}
+
+/* ------------------------------------------------------ self-destruct */
+
+.terminal.is-countdown {
+  border-color: rgba(255, 95, 87, 0.55);
+  box-shadow:
+    0 40px 90px -45px rgba(255, 95, 87, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.terminal.is-countdown .terminal-prompt {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.terminal.is-countdown .t-caret {
+  display: none;
+}
+
+.t-destruct {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 95, 87, 0.035) 0 1px, transparent 1px 4px),
+    radial-gradient(100% 100% at 50% 50%, rgba(255, 95, 87, 0.08), transparent 70%);
+}
+
+.t-destruct-kicker {
+  margin: 0;
+  color: var(--muted-2);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+}
+
+.t-destruct-title {
+  margin: 0;
+  color: #ff6b81;
+  font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.t-destruct-log {
+  display: grid;
+  gap: 0.1rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.t-destruct-log p,
+.t-destruct-state,
+.t-destruct-hint {
+  margin: 0;
+}
+
+.t-destruct-state {
+  margin-top: 0.8rem;
+  color: var(--amber);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.t-countdown {
+  color: #ff5f57;
+  font-size: clamp(2.2rem, 8vw, 6rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-shadow: 0 0 24px rgba(255, 95, 87, 0.6);
+}
+
+.t-destruct.is-critical .t-countdown {
+  animation: destruct-pulse 0.5s steps(2) infinite;
+  color: #fff;
+}
+
+.t-destruct.is-detonated .t-countdown {
+  color: #fff;
+  text-shadow: 0 0 42px rgba(255, 255, 255, 0.9);
+}
+
+.t-destruct-hint {
+  color: var(--muted-2);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.terminal.is-destroyed {
+  animation: destruct-collapse 1s var(--ease) forwards;
+  transform-origin: center top;
+}
+
+@keyframes destruct-pulse {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes destruct-collapse {
+  0% {
+    filter: brightness(1);
+    opacity: 1;
+  }
+  18% {
+    filter: brightness(4);
+    opacity: 1;
+  }
+  100% {
+    filter: brightness(8);
+    opacity: 0;
+    transform: scale(0.98);
+    visibility: hidden;
+  }
 }
 
 /* ------------------------------------------------------- zx spectrum */
@@ -891,7 +1068,7 @@ a {
 }
 
 .zx-monitor {
-  width: min(100%, 460px);
+  width: min(100%, 560px);
 }
 
 .zx-screen {
@@ -1573,6 +1750,7 @@ a {
 .contact-card {
   position: relative;
   padding: 1.5rem;
+  scroll-margin-top: 84px;
   border: 1px solid var(--line-strong);
   border-radius: 18px;
   background: linear-gradient(165deg, #0b1119, #070a10);
@@ -1629,6 +1807,67 @@ a {
   color: var(--muted-2);
   font-size: 0.8rem;
   line-height: 1.6;
+}
+
+.contact-form {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+.contact-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.contact-input {
+  width: 100%;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.contact-input::placeholder {
+  color: var(--muted-2);
+  opacity: 0.8;
+}
+
+.contact-input:focus {
+  border-color: color-mix(in srgb, var(--cyan) 55%, var(--line-strong));
+  box-shadow: 0 0 0 3px rgba(77, 227, 255, 0.1);
+  outline: none;
+}
+
+.contact-textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+.contact-submit {
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.1rem;
+  white-space: normal;
+  text-align: center;
+}
+
+.contact-hint {
+  margin: 0;
+  color: var(--muted-2);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.contact-hint--warn {
+  color: var(--amber);
 }
 
 /* ------------------------------------------------------------ footer */
@@ -1752,10 +1991,6 @@ a {
 /* --------------------------------------------------------- responsive */
 
 @media (max-width: 1080px) {
-  .hero-grid {
-    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-  }
-
   .app-grid {
     grid-template-columns: 1fr;
   }
@@ -1783,7 +2018,7 @@ a {
   }
 
   .terminal {
-    max-width: 480px;
+    max-width: none;
   }
 
   .about-grid {
@@ -1894,6 +2129,10 @@ a {
 
   .hero {
     padding-block: 2.75rem 2.5rem;
+  }
+
+  .console-band {
+    padding-bottom: 2.5rem;
   }
 
   .terminal {
