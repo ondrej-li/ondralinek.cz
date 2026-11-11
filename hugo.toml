@@ -23,7 +23,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     weight = 1
     title = "Ondra Linek — sites, apps & open source"
     [languages.en.params]
-      description = "Live sites, apps and open-source tools by Ondra Linek — Go, SQL, cloud and LLM on the server, Swift on Apple platforms."
+      description = "Forward deployed engineer Ondra Linek — product ownership, delivery and hands-on work in Go, SQL, cloud and LLM agents, plus native apps for Apple platforms."
 
   [languages.cs]
     languageName = "Čeština"
@@ -32,7 +32,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     weight = 2
     title = "Ondra Linek — weby, aplikace a open source"
     [languages.cs.params]
-      description = "Weby, aplikace a open-source nástroje Ondry Linka — Go, SQL, cloud a LLM na serveru, Swift na platformách Apple."
+      description = "Forward deployed engineer Ondra Linek — produkt, dodávka a práce rukama v Go, SQL, cloudu a LLM agentech, plus nativní aplikace pro platformy Apple."
 
 [markup]
   [markup.goldmark.renderer]

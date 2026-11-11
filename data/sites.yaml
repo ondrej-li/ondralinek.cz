@@ -42,5 +42,5 @@
   tech: [Static HTML]
   accent: lime
   desc:
-    en: "The long version: experience, services and skills, plus a contact form. Plain HTML, versioned in git and deployed by a systemd timer."
-    cs: "Delší verze: praxe, služby a dovednosti a kontaktní formulář. Čisté HTML, verzované v gitu a nasazované systemd timerem."
+    en: "The long version: forward deployed engineering — product ownership, delivery and hands-on work — with experience, services and skills. Plain HTML, versioned in git and deployed by a systemd timer."
+    cs: "Delší verze: forward deployed engineering — produkt, dodávka i práce rukama — s praxí, službami a dovednostmi. Čisté HTML, verzované v gitu a nasazované systemd timerem."

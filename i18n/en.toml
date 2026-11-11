@@ -36,7 +36,7 @@ other = "ZX Spectrum BASIC command"
 other = "Skip to content"
 
 [brand_tagline]
-other = "software engineer"
+other = "forward deployed engineer"
 
 [menu]
 other = "Menu"
@@ -54,13 +54,15 @@ other = "Open source"
 other = "About"
 
 [hero_eyebrow]
-other = "Engineer · I own the outcome"
+other = "Forward deployed engineer"
+[hero_eyebrow_extra]
+other = "product · delivery · code"
 [hero_title_1]
 other = "Sites, apps & tools"
 [hero_title_2]
 other = "running live."
 [hero_lede]
-other = "Welcome. This is my personal website. Feel free to look around, check out my other sites, apps and tools. I'm always open to new ideas, and would love to"
+other = "Welcome. This is my personal website. I'm a forward deployed engineer — part product owner, part development manager, and still close enough to the code to build the thing and herd the agents. Feel free to look around, check out my other sites, apps and tools. I'm always open to new ideas, and would love to"
 [hero_lede_link]
 other = "get in touch"
 [hero_lede_end]
@@ -113,9 +115,9 @@ other = "04 — About"
 other = "About"
 
 [about_p1]
-other = "I'm a software engineer from Czechia. I have spent the last decade building Go backends — internal platforms, onboarding, billing, support tooling and automation — and I build native apps for Apple platforms in my own time."
+other = "I'm a forward deployed engineer from Czechia. That means I work where the product, the delivery and the code meet: shaping what to build with the people who need it, deciding how it gets built, and staying hands-on — Go backends, SQL, cloud and now LLM agents — until it runs in production."
 [about_p2]
-other = "I take systems from idea to production and stay responsible for them: architecture, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job."
+other = "Part product owner, part development manager, part engineer. I take systems from idea to production and stay responsible for them: architecture, priorities, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job."
 [contact_heading]
 other = "Get in touch"
 [contact_email]

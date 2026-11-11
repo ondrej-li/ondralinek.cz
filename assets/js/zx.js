@@ -47,10 +47,10 @@
 
   const TEXT = {
     en: {
-      whoami: 'Ondra Linek — engineer. I build Go backends and native apps for Apple platforms, and I stay responsible for the result from idea to production.',
+      whoami: 'Ondra Linek — forward deployed engineer. Part product owner, part development manager, part hands-on engineer and agent herder. I take products from idea to production and stay responsible for them.',
       about: [
-        'I am a software engineer from Czechia. The last decade has been Go backends — internal platforms, onboarding, billing, support tooling and automation — and Apple apps in my own time.',
-        'I take systems from idea to production and stay responsible for them: architecture, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job.',
+        'I am a forward deployed engineer from Czechia. I work where the product, the delivery and the code meet: shaping what to build, deciding how it gets built, and staying hands-on — Go, SQL, cloud, LLM agents — until it runs in production.',
+        'Part product owner, part development manager, part engineer. I take systems from idea to production and stay responsible for them: architecture, priorities, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job.',
       ],
       contactNote: 'Open to collaboration, new projects and ideas worth building.',
       openHint: 'GOTO/OPEN <N> OR OPEN <NAME>',
@@ -68,10 +68,10 @@
       entries: (n) => `${String(n).padStart(2, '0')} ENTRIES`,
     },
     cs: {
-      whoami: 'Ondra Linek — inženýr. Stavím Go backendy a nativní aplikace pro platformy Apple a zůstávám odpovědný za výsledek od nápadu po provoz.',
+      whoami: 'Ondra Linek — forward deployed engineer. Zčásti product owner, zčásti development manager, zčásti inženýr u kódu a pastýř agentů. Beru produkty od nápadu do provozu a zůstávám za ně odpovědný.',
       about: [
-        'Jsem softwarový inženýr z Česka. Posledních deset let stavím backendy v Go — interní platformy, onboarding, billing, podpůrné nástroje a automatizaci — a ve volném čase nativní aplikace pro platformy Apple.',
-        'Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce.',
+        'Jsem forward deployed engineer z Česka. Pracuju tam, kde se potkává produkt, dodávka a kód: řeším co postavit, jak se to postaví, a zůstávám u toho rukama — Go, SQL, cloud, LLM agenti — dokud to neběží v produkci.',
+        'Zčásti product owner, zčásti development manager, zčásti inženýr. Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, priority, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce.',
       ],
       contactNote: 'Otevřený spolupráci, novým projektům a nápadům, které stojí za to postavit.',
       openHint: 'GOTO/OPEN <N> NEBO OPEN <JMENO>',

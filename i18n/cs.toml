@@ -36,7 +36,7 @@ other = "Příkaz ZX Spectrum BASIC"
 other = "Přeskočit na obsah"
 
 [brand_tagline]
-other = "softwarový inženýr"
+other = "forward deployed engineer"
 
 [menu]
 other = "Menu"
@@ -54,13 +54,15 @@ other = "Open source"
 other = "O mně"
 
 [hero_eyebrow]
-other = "Inženýr · Odpovídám za výsledek"
+other = "Forward deployed engineer"
+[hero_eyebrow_extra]
+other = "produkt · dodávka · kód"
 [hero_title_1]
 other = "Weby, aplikace a nástroje"
 [hero_title_2]
 other = "v provozu."
 [hero_lede]
-other = "Vítejte. Tohle je můj osobní web. Rozhlédněte se, prohlédněte si moje weby, aplikace a nástroje. Vždycky mám radost z nových nápadů a rád se s vámi"
+other = "Vítejte. Tohle je můj osobní web. Jsem forward deployed engineer — zčásti product owner, zčásti development manager a pořád dost blízko kódu, abych to postavil a zvládl agenty. Rozhlédněte se, prohlédněte si moje weby, aplikace a nástroje. Vždycky mám radost z nových nápadů a rád se s vámi"
 [hero_lede_link]
 other = "spojím"
 [hero_lede_end]
@@ -113,9 +115,9 @@ other = "04 — O mně"
 other = "O mně"
 
 [about_p1]
-other = "Jsem softwarový inženýr z Česka. Posledních deset let stavím backendy v Go — interní platformy, onboarding, billing, podpůrné nástroje a automatizaci — a ve volném čase nativní aplikace pro platformy Apple."
+other = "Jsem forward deployed engineer z Česka. Pracuju tam, kde se potkává produkt, dodávka a kód: s lidmi, kteří to potřebují, řeším co postavit, rozhoduju jak se to postaví a zůstávám u toho rukama — Go backendy, SQL, cloud a teď i LLM agenti — dokud to neběží v produkci."
 [about_p2]
-other = "Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce."
+other = "Zčásti product owner, zčásti development manager, zčásti inženýr. Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, priority, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce."
 [contact_heading]
 other = "Spojte se se mnou"
 [contact_email]
