@@ -70,6 +70,9 @@ site) opens it in a new tab. `ls`, `cd sites/kcna`, `cat`, `open`, `tree` and
 `neofetch` work too, and Tab completes commands, folders and project names.
 Hangman survives as a hidden easter egg (type `hangman`), and `self-destruct`
 starts a millisecond countdown that removes the console when it reaches zero.
+URLs, `www.` hosts, e-mail addresses and `#anchors` printed by the console are
+turned into links; anchors scroll within the page, everything else opens in a
+new tab.
 
 `zx` (or `spectrum`, or the **Shell / ZX 48K** switch in the terminal bar) boots
 a simulated ZX Spectrum 48K: a 32×24 character screen with the Spectrum palette,

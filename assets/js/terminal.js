@@ -77,6 +77,7 @@
         email: 'E-mail',
         github: 'GitHub',
         cv: 'CV',
+        form: 'form',
       },
       status: { live: 'App Store', beta: 'TestFlight', oss: 'Open source', wip: 'In development' },
       nf: { os: 'OS', stack: 'Stack', shell: 'Shell', uptime: 'Uptime' },
@@ -172,6 +173,7 @@
         email: 'E-mail',
         github: 'GitHub',
         cv: 'CV',
+        form: 'formulář',
       },
       status: { live: 'App Store', beta: 'TestFlight', oss: 'Open source', wip: 'Ve vývoji' },
       nf: { os: 'OS', stack: 'Stack', shell: 'Shell', uptime: 'Uptime' },
@@ -234,6 +236,45 @@
     return node;
   }
 
+  const LINK_PATTERN = /(?:https?|ftp):\/\/[^\s<>"']+|mailto:[^\s<>"']+|www\.[^\s<>"']+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|#[A-Za-z0-9_-]+|(?:[A-Za-z0-9-]+\.)+(?:cz|com|org|net|io|dev|app|me|eu|sk|uk)(?:\/[^\s<>"']*)?/gi;
+
+  function hrefForToken(token) {
+    if (token.startsWith('#')) return token;
+    if (token.startsWith('www.')) return 'https://' + token;
+    if (token.includes('@') && !token.startsWith('mailto:')) return 'mailto:' + token;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(token)) return token;
+    return 'https://' + token;
+  }
+
+  function appendLinkedText(parent, text) {
+    const value = String(text ?? '');
+    let lastIndex = 0;
+    for (const match of value.matchAll(LINK_PATTERN)) {
+      const start = match.index;
+      if (start > lastIndex) parent.appendChild(document.createTextNode(value.slice(lastIndex, start)));
+      let token = match[0];
+      let trailing = '';
+      while (/[.,;:!?)\]}"']$/.test(token)) {
+        trailing = token.slice(-1) + trailing;
+        token = token.slice(0, -1);
+      }
+      if (token) {
+        const a = el('a', 't-link', token);
+        if (token.startsWith('#')) {
+          a.setAttribute('href', token);
+        } else {
+          a.href = hrefForToken(token);
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        }
+        parent.appendChild(a);
+      }
+      if (trailing) parent.appendChild(document.createTextNode(trailing));
+      lastIndex = start + match[0].length;
+    }
+    if (lastIndex < value.length) parent.appendChild(document.createTextNode(value.slice(lastIndex)));
+  }
+
   let scrollFrame = 0;
 
   function scroll() {
@@ -245,7 +286,8 @@
   }
 
   function line(text, cls) {
-    const p = el('div', 't-line' + (cls ? ' ' + cls : ''), text);
+    const p = el('div', 't-line' + (cls ? ' ' + cls : ''));
+    appendLinkedText(p, text);
     out.appendChild(p);
     scroll();
     return p;
@@ -254,14 +296,18 @@
   function link(url, label) {
     const a = el('a', 't-link', label);
     a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
+    if (!url.startsWith('#')) {
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
     return a;
   }
 
   function makeRow(key, value) {
     const row = el('div', 't-row');
-    row.append(el('span', 't-row-key', key), el('span', 't-row-val', value));
+    const val = el('span', 't-row-val');
+    appendLinkedText(val, value);
+    row.append(el('span', 't-row-key', key), val);
     return row;
   }
 
@@ -302,7 +348,9 @@
 
   function echo(raw) {
     const p = el('div', 't-line');
-    p.append(el('span', 't-prompt-inline', currentPrompt + ' '), el('span', 't-echo', raw));
+    const echoed = el('span', 't-echo');
+    appendLinkedText(echoed, raw);
+    p.append(el('span', 't-prompt-inline', currentPrompt + ' '), echoed);
     out.appendChild(p);
     scroll();
   }
@@ -422,6 +470,7 @@
     kvLink(S.labels.email, data.links.email, 'mailto:' + data.links.email);
     kvLink(S.labels.github, data.links.github.replace(/^https:\/\//, ''), data.links.github);
     kvLink(S.labels.cv, data.links.cv.replace(/^https:\/\//, ''), data.links.cv);
+    kvLink(S.labels.form, '#contact', '#contact');
     line(S.contactNote, 't-dim');
     blank();
   }
@@ -1017,6 +1066,11 @@
   });
 
   function bootShell() {
+    out.querySelectorAll(':scope > .t-line').forEach((node) => {
+      const text = node.textContent;
+      node.replaceChildren();
+      appendLinkedText(node, text);
+    });
     setPrompt(defaultPrompt());
     echo('ls');
     listDirectory('~');
@@ -1025,6 +1079,16 @@
   }
 
   root.addEventListener('click', (event) => {
+    const anchor = event.target.closest('a[href^="#"]');
+    if (anchor) {
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        event.preventDefault();
+        window.history.pushState(null, '', anchor.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
     const folder = event.target.closest('[data-cd]');
     if (folder) {
       event.preventDefault();

@@ -136,8 +136,6 @@ other = "Zpráva"
 other = "Napište, co máte na mysli…"
 [contact_send]
 other = "Otevřít e-mailový klient"
-[contact_form_hint]
-other = "Otevře se výchozí e-mailový klient s připravenou zprávou."
 [contact_noscript]
 other = "JavaScript je vypnutý — použijte e-mailový odkaz výše."
 

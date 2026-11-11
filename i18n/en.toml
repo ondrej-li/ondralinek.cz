@@ -136,8 +136,6 @@ other = "Message"
 other = "Tell me what you have in mind…"
 [contact_send]
 other = "Open email client"
-[contact_form_hint]
-other = "This opens your default mail app with the message ready to send."
 [contact_noscript]
 other = "JavaScript is off — use the e-mail link above."
 
