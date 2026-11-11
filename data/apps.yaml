@@ -5,6 +5,24 @@
 # GitHub metadata (stars, last push) is fetched at build time by
 # tools/fetch-github.py and merged in by the template.
 
+- id: lora
+  name: Lóra
+  status: beta
+  platforms: [iOS, iPadOS]
+  repo: ""
+  site: https://lora.ondralinek.cz/
+  store: ""
+  icon: images/apps/lora.webp
+  shot: ""
+  accent: yellow
+  tech: [Swift, SwiftUI]
+  tagline:
+    en: "The Czech card game for four players, scored properly."
+    cs: "Česká karetní hra pro čtyři hráče, správně spočítaná."
+  summary:
+    en: "Record a live game card by card, or play against three computer opponents. Ten stages plus the maturita exam, corrections in any stage, and a result you can share as a picture. Everything stays on the device."
+    cs: "Zapište živou hru kartu po kartě, nebo hrajte proti třem počítačům. Deset fází a maturita, opravy v kterékoli fázi a výsledek ke sdílení jako obrázek. Vše zůstává v zařízení."
+
 - id: vdv-live
   name: VDV Live
   status: live
