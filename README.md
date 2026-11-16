@@ -37,6 +37,7 @@ The page is one template over four data files. No content files to keep in sync.
 | `data/apps.yaml` | App cards: name, platforms, status, links, app icon, screenshot |
 | `data/sites.yaml` | Site rows: domain, name, description, tech |
 | `data/oss.yaml` | Open-source cards |
+| `data/position.yaml` | Current position card: company, role, since, location, summary, focus |
 | `data/github.json` | Generated at build time by `tools/fetch-github.py` (gitignored) |
 | `i18n/en.toml`, `i18n/cs.toml` | Every piece of UI copy, both languages |
 | `content/en/_index.md`, `content/cs/_index.md` | Home pages (title only) |
@@ -60,6 +61,20 @@ omitted when the file is missing, so a build without network still works.
 * Set `GITHUB_TTL` to change the 30-minute cache lifetime.
 * The server refreshes this hourly even when nothing was pushed, so repository
   changes show up without editing the site.
+
+## Current position
+
+The About section has three columns — about, get in touch, current position — and
+the position card comes from `data/position.yaml` alone. The same file feeds the
+`whoami` line in the console and in ZX BASIC.
+
+Updating it is an agent task rather than a form: a plain YAML file in git, no
+service and no registration. When I forward or paste an email that states my new
+position, the agent edits `data/position.yaml` (both languages, `since` as an ISO
+date, `updated` bumped), commits with a `Position: ` prefix and pushes; the
+auto-deploy timer publishes it within five minutes. The rules live in
+[`AGENTS.md`](AGENTS.md) and [`.github/copilot-instructions.md`](.github/copilot-instructions.md)
+so any agent picking up the repository knows the drill.
 
 ## Console and ZX Spectrum
 
@@ -98,6 +113,9 @@ assets/css/main.css        the whole design (dark, grid-based, no frameworks)
 assets/js/main.js          scroll reveal + mobile menu
 assets/js/terminal.js      shell commands, project links, self-destruct
 assets/js/contact.js       contact form → mailto
+layouts/partials/position-card.html  current position card
+data/position.yaml         current position source of truth
+AGENTS.md                  instructions for coding agents
 assets/js/zx.js            ZX Spectrum screen, palette and BASIC interpreter
 assets/images/apps/        optimised app icons (WebP)
 assets/images/shots/       optimised screenshots (WebP)

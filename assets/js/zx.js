@@ -62,6 +62,8 @@
       usageCat: 'USAGE: CAT <NAME>',
       specific: 'BE MORE SPECIFIC',
       visit: (name) => `OPEN ${name} TO VISIT`,
+      position: 'NOW',
+      positionSince: 'SINCE',
       lsHint: 'CD SITES  APPS  TOOLS',
       cdHint: 'CD <N> OR CD <NAME>',
       files: 'ABOUT  CONTACT  README',
@@ -83,6 +85,8 @@
       usageCat: 'POUZITI: CAT <JMENO>',
       specific: 'UPŘESNĚTE',
       visit: (name) => `OPEN ${name} PRO OTEVRENI`,
+      position: 'NYNI',
+      positionSince: 'OD',
       lsHint: 'CD SITES  APPS  TOOLS',
       cdHint: 'CD <N> NEBO CD <JMENO>',
       files: 'ABOUT  CONTACT  README',
@@ -1041,6 +1045,12 @@
     clearScreen();
     printLine('ONDRA LINEK', { ink: 6, bright: 1 });
     printLine(T.whoami, attrs);
+    if (data.position && data.position.company) {
+      blankZXLine();
+      printLine(`${T.position}  ${data.position.company.toUpperCase()}`, { ink: 6, bright: 1 });
+      printLine(`      ${data.position.role.toUpperCase()}`, attrs);
+      printLine(`      ${T.positionSince} ${data.position.since.toUpperCase()}`, { ink: 5 });
+    }
     blankZXLine();
     if (full) {
       T.about.forEach((paragraph) => {

@@ -14,7 +14,9 @@
 {{- range $oss -}}
   {{- $toolsT = $toolsT | append (dict "name" .name "repo" .repo "lang" .lang "desc" (index .desc site.Language.Lang)) -}}
 {{- end -}}
-{{- $terminal := dict "lang" site.Language.Lang "sites" $sitesT "apps" $appsT "tools" $toolsT "links" (dict "github" site.Params.github "email" site.Params.email "cv" site.Params.cv) -}}
+{{- $position := site.Data.position -}}
+{{- $positionT := dict "company" $position.company "role" (index $position.role site.Language.Lang) "since" (partial "position-since.html" $position.since) -}}
+{{- $terminal := dict "lang" site.Language.Lang "sites" $sitesT "apps" $appsT "tools" $toolsT "position" $positionT "links" (dict "github" site.Params.github "email" site.Params.email "cv" site.Params.cv) -}}
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="wrap wrap--wide hero-grid">
@@ -135,7 +137,7 @@
 </section>
 
 <section class="section section--alt" id="about">
-  <div class="wrap about-grid">
+  <div class="wrap wrap--wide about-grid">
     <div class="about-copy" data-reveal>
       <p class="kicker mono">{{ i18n "section_about_kicker" }}</p>
       <h2>{{ i18n "section_about_title" }}</h2>
@@ -173,6 +175,7 @@
         <noscript><p class="contact-hint contact-hint--warn">{{ i18n "contact_noscript" }}</p></noscript>
       </form>
     </aside>
+    {{ partial "position-card.html" . }}
   </div>
 </section>
 {{ end }}

@@ -1,0 +1,28 @@
+# Current position — the single source of truth for the "Current position" card
+# in the About section and for the `whoami` line in the console.
+#
+# To update it (see AGENTS.md): change company, role, since, location, summary
+# and focus, then bump `updated`. Hugo rebuilds the page on the next deploy.
+#
+# Leave `url` empty when the employer has no public site worth linking.
+
+company: Exaforce
+url: ""
+role:
+  en: Forward deployed engineer
+  cs: Forward deployed engineer
+since: 2023-01-01
+location:
+  en: Remote · Czechia
+  cs: Remote · Česko
+summary:
+  en: "Internal platform tooling for a cybersecurity company: user management, onboarding, the support module, bespoke ETL and automation agents."
+  cs: "Interní platformní nástroje pro kyberbezpečnostní firmu: správa uživatelů, onboarding, podpůrný modul, ETL na míru a automatizační agenti."
+focus:
+  - en: "I own the scope, priorities and delivery of internal platform subsystems."
+    cs: "Vlastním rozsah, priority a dodávku interních platformních systémů."
+  - en: "I build the Go services, SQL and automation behind them, agents included."
+    cs: "Stavím Go služby, SQL a automatizaci za nimi, včetně agentů."
+  - en: "I stay responsible for what ships: architecture, operation and the decisions in between."
+    cs: "Zůstávám odpovědný za to, co jde do provozu: architektura, provoz a rozhodnutí mezi tím."
+updated: 2026-11-16

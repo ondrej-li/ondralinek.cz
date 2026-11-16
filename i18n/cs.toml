@@ -118,6 +118,14 @@ other = "O mně"
 other = "Jsem forward deployed engineer z Česka. Pracuju tam, kde se potkává produkt, dodávka a kód: s lidmi, kteří to potřebují, řeším co postavit, rozhoduju jak se to postaví a zůstávám u toho rukama — Go backendy, SQL, cloud a teď i LLM agenti — dokud to neběží v produkci."
 [about_p2]
 other = "Zčásti product owner, zčásti development manager, zčásti inženýr. Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, priority, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce."
+[position_heading]
+other = "Současná pozice"
+[position_since]
+other = "od"
+[position_updated]
+other = "aktualizováno"
+[position_focus]
+other = "Co to znamená"
 [contact_heading]
 other = "Spojte se se mnou"
 [contact_email]

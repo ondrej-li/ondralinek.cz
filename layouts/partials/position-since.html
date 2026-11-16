@@ -1,0 +1,10 @@
+{{- /* Localised "Month YYYY" for the current position start date. Hugo's time
+       formatting is English-only here, so the Czech month names are spelled
+       out. Returns a string, consumed by templates as `partial`. */ -}}
+{{- $since := time.AsTime . -}}
+{{- $text := $since.Format "January 2006" -}}
+{{- if eq site.Language.Lang "cs" -}}
+  {{- $months := slice "ledna" "února" "března" "dubna" "května" "června" "července" "srpna" "září" "října" "listopadu" "prosince" -}}
+  {{- $text = printf "%s %d" (index $months (sub (int $since.Month) 1)) $since.Year -}}
+{{- end -}}
+{{- return $text -}}
