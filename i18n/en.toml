@@ -120,12 +120,12 @@ other = "I'm a forward deployed engineer from Czechia. That means I work where t
 other = "Part product owner, part development manager, part engineer. I take systems from idea to production and stay responsible for them: architecture, priorities, implementation, operation and the decisions in between. In the age of LLMs and agents, writing code is the easy part — knowing what to build, keeping it correct and standing behind it is the job."
 [position_heading]
 other = "Current position"
-[position_since]
-other = "since"
+[position_map]
+other = "map"
+[position_open_map]
+other = "Open in a map"
 [position_updated]
 other = "updated"
-[position_focus]
-other = "What that means"
 [contact_heading]
 other = "Get in touch"
 [contact_email]

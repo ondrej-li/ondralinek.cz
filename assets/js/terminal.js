@@ -65,7 +65,7 @@
       exit: 'Nice try. This shell stays open.',
       rm: 'Permission denied. And please do not.',
       githubOpen: (url) => `Opening ${url}`,
-      position: (p) => `current position: ${p.company} · ${p.role} · since ${p.since}`,
+      position: (p) => `currently in: ${p.location}`,
       labels: {
         domain: 'domain',
         url: 'url',
@@ -162,7 +162,7 @@
       exit: 'Hezký pokus. Tenhle shell se nezavírá.',
       rm: 'Permission denied. A prosím, nedělejte to.',
       githubOpen: (url) => `Otevírám ${url}`,
-      position: (p) => `současná pozice: ${p.company} · ${p.role} · od ${p.since}`,
+      position: (p) => `právě v: ${p.location}`,
       labels: {
         domain: 'doména',
         url: 'url',
@@ -871,7 +871,7 @@
       case 'whoami':
       case 'me':
         line(S.whoami, 't-block');
-        if (data.position && data.position.company) line(S.position(data.position), 't-dim');
+        if (data.position && data.position.location) line(S.position(data.position), 't-dim');
         blank();
         break;
       case 'about':

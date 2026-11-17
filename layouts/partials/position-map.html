@@ -1,0 +1,46 @@
+{{- /* Static tile map. OSM raster tiles are composed into one SVG, cropped to a
+       window centred on the coordinates, so the card gets a real map with no
+       JavaScript, no iframe and no key. The tiles are filtered to the site's
+       palette in CSS; the marker and the attribution stay unfiltered. */ -}}
+{{- $lat := float .lat -}}
+{{- $lon := float .lon -}}
+{{- $z := 13 -}}
+{{- $size := 256.0 -}}
+{{- $n := math.Pow 2 $z -}}
+{{- $world := mul $size $n -}}
+{{- $x := mul (div (add $lon 180.0) 360.0) $world -}}
+{{- $phi := div (mul $lat math.Pi) 180.0 -}}
+{{- $merc := math.Log (add (math.Tan $phi) (div 1.0 (math.Cos $phi))) -}}
+{{- $y := mul (div (sub 1.0 (div $merc math.Pi)) 2.0) $world -}}
+{{- $w := 512.0 -}}
+{{- $h := 204.0 -}}
+{{- $x0 := sub $x (div $w 2.0) -}}
+{{- $y0 := sub $y (div $h 2.0) -}}
+{{- $txFrom := int (math.Floor (div $x0 $size)) -}}
+{{- $txTo := int (math.Floor (div (sub (add $x0 $w) 0.01) $size)) -}}
+{{- $tyFrom := int (math.Floor (div $y0 $size)) -}}
+{{- $tyTo := int (math.Floor (div (sub (add $y0 $h) 0.01) $size)) -}}
+{{- $tiles := int $n -}}
+{{- $cx := sub $x $x0 -}}
+{{- $cy := sub $y $y0 -}}
+<svg class="position-map__canvas" viewBox="0 0 {{ $w }} {{ $h }}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="{{ .label }}">
+  {{- range seq $tyFrom $tyTo }}
+    {{- $ty := . -}}
+    {{- if and (ge $ty 0) (lt $ty $tiles) }}
+      {{- range seq $txFrom $txTo }}
+        {{- $tx := . -}}
+        <image href="https://tile.openstreetmap.org/{{ $z }}/{{ mod (add $tx $tiles) $tiles }}/{{ $ty }}.png" x="{{ math.Round (sub (mul (float $tx) $size) $x0) }}" y="{{ math.Round (sub (mul (float $ty) $size) $y0) }}" width="256" height="256" />
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  <rect class="position-map__shade" x="0" y="0" width="{{ math.Round $w }}" height="{{ math.Round $h }}" />
+  <g class="position-map__marker">
+    <circle class="position-map__halo" cx="{{ math.Round $cx }}" cy="{{ math.Round $cy }}" r="22" />
+    <circle class="position-map__ring" cx="{{ math.Round $cx }}" cy="{{ math.Round $cy }}" r="12" />
+    <line x1="{{ math.Round (sub $cx 26) }}" y1="{{ math.Round $cy }}" x2="{{ math.Round (sub $cx 7) }}" y2="{{ math.Round $cy }}" />
+    <line x1="{{ math.Round (add $cx 7) }}" y1="{{ math.Round $cy }}" x2="{{ math.Round (add $cx 26) }}" y2="{{ math.Round $cy }}" />
+    <line x1="{{ math.Round $cx }}" y1="{{ math.Round (sub $cy 26) }}" x2="{{ math.Round $cx }}" y2="{{ math.Round (sub $cy 7) }}" />
+    <line x1="{{ math.Round $cx }}" y1="{{ math.Round (add $cy 7) }}" x2="{{ math.Round $cx }}" y2="{{ math.Round (add $cy 26) }}" />
+    <circle class="position-map__dot" cx="{{ math.Round $cx }}" cy="{{ math.Round $cy }}" r="5" />
+  </g>
+</svg>

@@ -26,36 +26,61 @@ browser, and check both languages (`/` and `/cs/`). Keep the CSP in
 ## Current position — email means "update this"
 
 The About section has three columns: **about**, **get in touch** and
-**current position**. The position card is rendered from `data/position.yaml`;
-that file is the only place the job lives. It also feeds the `whoami` line in the
-console and in ZX Spectrum BASIC.
+**current position**. The third one is where Ondra is, right now: a small
+OpenStreetMap tile map with a marker, the place name, the coordinates and an
+`updated` stamp. It is rendered
+from `data/position.yaml`, and the same file feeds the `whoami` line in the
+console and in ZX BASIC.
 
-**If Ondra forwards, pastes or describes an email that states his current
-position — a new employer, a new title, a new start date, a move, or a correction
-to any of those — treat it as a request to update this site.** Do not ask what to
-do with it and do not summarise it back; apply it.
+**If Ondra forwards, pastes or describes an email that states where he is —
+a city, a region, a country, an address, coordinates, "remote", or a correction
+to any of those — treat it as a request to update this card.** Do not ask what
+to do with it and do not summarise it back. Apply it and report what changed.
 
-Steps:
+### Change only the position, never the rest of the page
 
-1. Edit `data/position.yaml`:
-   - `company`, `role.en` / `role.cs`, `since` (ISO date, `YYYY-MM-DD`; the first
-     of the month is fine), `location.en` / `location.cs`, `summary.en` /
-     `summary.cs`, and the `focus` bullets (0–3 is plenty).
-   - Keep both languages in sync and match the existing voice: first person,
-     plain sentences, no recruiter adjectives.
-   - `url` stays empty unless the employer has a public site worth linking.
-2. Set `updated:` to the date of the change (the email's date if it differs).
-3. Only state what the email actually says. If the start date, location or scope
-   is missing, keep the previous value or drop the field — never invent one.
-4. Build, then check `/` and `/cs/`: the card must read correctly in both and the
-   layout must still fit three columns (the card collapses to two columns under
-   1180 px and to one under 860 px).
-5. Commit with a message starting `Position: ` (for example
-   `Position: move to Acme as staff engineer`), push to `main`, and tell Ondra
-   what changed and that it is live within five minutes.
+A position email is not a request to touch anything else. Leave the hero, the
+About copy, the sites, apps and tools sections, the contact details, the CV link
+and every other i18n string exactly as they are. The only file that should change
+is `data/position.yaml`. Do not rewrite, reflow or "improve" the page around it.
+The card is about geography only — it is not a job history, so an employer or a
+title in the email does not belong in this file.
 
-No service, inbox or registration is involved: the email is pasted into the
-agent session by Ondra, and the result lands in git.
+### What the email can contain
+
+- **Place** — `location.en` / `location.cs`. Any granularity: `Prague`,
+  `Prague, Czechia`, `Praha 2`, `Czechia`, `Central Europe`, `Remote`. Keep the
+  email's own wording; do not upgrade "Czechia" to "Prague" or the reverse, and
+  do not invent a city for a country or the other way round.
+- **Coordinates** — `coords.lat` / `coords.lon`, decimal degrees, south and west
+  negative. They draw the marker on the map; without them the card shows the
+  place and a search link only.
+- **A sentence** — `note.en` / `note.cs`, optional, for something like "here for
+  a week". Short, plain, first person.
+- **Timestamp** — `updated`, a full ISO timestamp (`2026-11-16T20:14:00+01:00`),
+  shown as `updated 2026-11-16 20:14`. Always bump it.
+
+### Coordinates
+
+- If the email gives coordinates, store them and keep a readable string in
+  `location`.
+- If the email gives **only** coordinates, put the same coordinate string in
+  `location.en` and `location.cs`. Never reverse-geocode from memory.
+- If the email gives only a place name, **delete** `coords` rather than leaving
+  a stale marker.
+
+### Steps
+
+1. Edit `data/position.yaml` as above. Touch nothing else.
+2. Build and check `/` and `/cs/`: the marker must sit on the right spot, the
+   place must read correctly in both languages, and the card must still fit the
+   third column (it collapses to two columns under 1180 px, one under 860 px).
+3. Commit with a message starting `Position: ` (for example
+   `Position: in Brno for the week`), push to `main`, and tell Ondra what
+   changed and that the timer publishes it within five minutes.
+
+Nothing outside git is involved: the email is pasted into the agent session and
+the result lands as a commit. No inbox, no service, no registration.
 
 ## House rules
 

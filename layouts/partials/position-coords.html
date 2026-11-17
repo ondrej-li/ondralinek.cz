@@ -1,0 +1,9 @@
+{{- /* Decimal degrees as a readable pair, e.g. "50.0755° N · 14.4378° E".
+       Returns a string; call as `partial "position-coords.html" $p.coords`. */ -}}
+{{- $lat := float .lat -}}
+{{- $lon := float .lon -}}
+{{- $latText := strings.TrimSuffix "." (strings.TrimRight "0" (printf "%.4f" (math.Abs $lat))) -}}
+{{- $lonText := strings.TrimSuffix "." (strings.TrimRight "0" (printf "%.4f" (math.Abs $lon))) -}}
+{{- $latHem := cond (ge $lat 0) "N" "S" -}}
+{{- $lonHem := cond (ge $lon 0) "E" "W" -}}
+{{- return printf "%s° %s · %s° %s" $latText $latHem $lonText $lonHem -}}

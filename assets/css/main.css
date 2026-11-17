@@ -27,6 +27,9 @@
   --mono: ui-monospace, "SF Mono", SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
   --wrap: 1180px;
   --console-font: clamp(0.88rem, 0.35vw + 0.74rem, 1rem);
+  /* Dark map out of the light OSM tiles; a light theme would use none. */
+  --map-filter: invert(0.9) hue-rotate(180deg) saturate(0.35) brightness(0.78) contrast(1.02);
+  --map-shade: rgba(5, 7, 11, 0.22);
   --radius: 20px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -1782,78 +1785,147 @@ a {
   color: var(--muted);
 }
 
-.position-company {
-  margin: 0;
-  font-size: clamp(1.35rem, 2vw, 1.7rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+.position-map {
+  position: relative;
+  aspect-ratio: 360 / 142;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #080b11;
 }
 
-.position-company a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-underline-offset: 3px;
+/* OSM raster tiles are light; the page is dark, so only the tiles are
+   inverted and hue-rotated to match the palette. Marker and attribution sit
+   outside that filter. A light theme only has to set --map-filter to none. */
+.position-map__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.position-company a:hover {
+.position-map__canvas image {
+  filter: var(--map-filter);
+}
+
+.position-map__shade {
+  fill: var(--map-shade);
+  pointer-events: none;
+}
+
+.position-map__marker line {
+  stroke: rgba(182, 243, 106, 0.55);
+  stroke-width: 1.6;
+}
+
+.position-map__halo {
+  fill: rgba(182, 243, 106, 0.18);
+  animation: position-ping 2.8s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.position-map__ring {
+  fill: none;
+  stroke: rgba(182, 243, 106, 0.6);
+  stroke-width: 1.6;
+}
+
+.position-map__dot {
+  fill: var(--lime);
+  stroke: #05070b;
+  stroke-width: 1.5;
+}
+
+@keyframes position-ping {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.4);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.position-place {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.position-place .icon {
+  flex: none;
   color: var(--lime);
-}
-
-.position-role {
-  margin: 0.25rem 0 0;
-  color: var(--lime);
-  font-size: 0.92rem;
-  line-height: 1.4;
+  opacity: 0.9;
 }
 
 .position-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 0.5rem;
-  margin: 0.75rem 0 0;
+  align-items: center;
+  gap: 0.3rem 0.9rem;
+  margin: 0.35rem 0 0;
   color: var(--muted-2);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   letter-spacing: 0.06em;
 }
 
-.position-sep {
-  opacity: 0.6;
-}
-
-.position-summary {
-  margin: 0.9rem 0 0;
+.position-note {
+  margin: 0.8rem 0 0;
   color: var(--muted);
   font-size: 0.85rem;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
-.position-focus {
-  display: grid;
-  gap: 0.45rem;
-  margin: 0.9rem 0 0;
-  padding: 0;
-  list-style: none;
+.position-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--muted-2);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease);
 }
 
-.position-focus li {
-  position: relative;
-  padding-left: 1rem;
-  color: var(--muted);
-  font-size: 0.8rem;
-  line-height: 1.55;
+.position-map-link:hover {
+  color: var(--lime);
 }
 
-.position-focus li::before {
-  content: "›";
-  position: absolute;
-  left: 0;
+.position-map-link .icon {
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+}
+
+.position-attribution {
+  margin: 0.5rem 0 0;
+  color: var(--muted-2);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.position-attribution a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+.position-attribution a:hover {
   color: var(--lime);
 }
 
 .position-updated {
-  margin: 1rem 0 0;
+  margin: 0.9rem 0 0;
   padding-top: 0.8rem;
   border-top: 1px dashed var(--line);
   color: var(--muted-2);

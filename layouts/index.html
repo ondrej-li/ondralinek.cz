@@ -15,7 +15,7 @@
   {{- $toolsT = $toolsT | append (dict "name" .name "repo" .repo "lang" .lang "desc" (index .desc site.Language.Lang)) -}}
 {{- end -}}
 {{- $position := site.Data.position -}}
-{{- $positionT := dict "company" $position.company "role" (index $position.role site.Language.Lang) "since" (partial "position-since.html" $position.since) -}}
+{{- $positionT := dict "location" (index $position.location site.Language.Lang) -}}
 {{- $terminal := dict "lang" site.Language.Lang "sites" $sitesT "apps" $appsT "tools" $toolsT "position" $positionT "links" (dict "github" site.Params.github "email" site.Params.email "cv" site.Params.cv) -}}
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>

@@ -1,23 +1,46 @@
 {{- $p := site.Data.position -}}
 {{- if $p -}}
 {{- $lang := site.Language.Lang -}}
-{{- $sinceText := partial "position-since.html" $p.since -}}
+{{- $place := "" -}}
+{{- with $p.location }}{{ $place = index . $lang }}{{ end -}}
+{{- $mapURL := "" -}}
+{{- with $p.coords -}}
+  {{- $mapURL = printf "https://www.openstreetmap.org/?mlat=%v&mlon=%v#map=13/%v/%v" (float .lat) (float .lon) (float .lat) (float .lon) -}}
+{{- else -}}
+  {{- with $place }}{{ $mapURL = printf "https://www.openstreetmap.org/search?query=%s" (. | urlquery) }}{{ end -}}
+{{- end -}}
 <aside class="position-card" id="position" data-reveal>
   <p class="position-title mono"><span class="status-dot" aria-hidden="true"></span>{{ i18n "position_heading" }}</p>
-  <p class="position-company">{{ if $p.url }}<a href="{{ $p.url }}" rel="noopener noreferrer">{{ $p.company }}</a>{{ else }}{{ $p.company }}{{ end }}</p>
-  <p class="position-role">{{ index $p.role $lang }}</p>
-  <p class="position-meta mono">
-    <span>{{ i18n "position_since" }} {{ $sinceText }}</span>
-    {{- with $p.location }}<span class="position-sep" aria-hidden="true">·</span><span>{{ index . $lang }}</span>{{ end }}
-  </p>
-  {{- with $p.summary }}<p class="position-summary">{{ index . $lang }}</p>{{ end }}
-  {{- with $p.focus }}
-  <ul class="position-focus">
-    {{- range . }}<li>{{ index . $lang }}</li>{{ end }}
-  </ul>
+
+  {{- with $p.coords }}
+  <div class="position-map">
+    {{ partial "position-map.html" (dict "lat" .lat "lon" .lon "label" (printf "%sOpenStreetMap" (cond (ne $place "") (printf "%s · " $place) ""))) }}
+  </div>
   {{- end }}
+
+  {{- with $place }}
+  <p class="position-place">
+    {{ partial "icon.html" "pin" }}
+    <span>{{ . }}</span>
+  </p>
+  {{- end }}
+
+  {{- if or $p.coords $mapURL }}
+  <p class="position-meta mono">
+    {{- with $p.coords }}<span>{{ partial "position-coords.html" . }}</span>{{ end }}
+    {{- with $mapURL }}<a class="position-map-link" href="{{ . }}" rel="noopener noreferrer">{{ i18n "position_map" }}{{ partial "icon.html" "arrow" }}</a>{{ end }}
+  </p>
+  {{- end }}
+
+  {{- with $p.note }}{{ with (index . $lang) }}
+  <p class="position-note">{{ . }}</p>
+  {{- end }}{{ end }}
+
   {{- with $p.updated }}
-  <p class="position-updated mono">{{ i18n "position_updated" }} <time datetime="{{ (time.AsTime .).Format "2006-01-02" }}">{{ (time.AsTime .).Format "2006-01-02" }}</time></p>
+  <p class="position-updated mono">{{ i18n "position_updated" }} <time datetime="{{ (time.AsTime .).Format "2006-01-02T15:04:05Z07:00" }}">{{ (time.AsTime .).Format "2006-01-02 15:04" }}</time></p>
+  {{- end }}
+  {{- if $p.coords }}
+  <p class="position-attribution mono"><a href="https://www.openstreetmap.org/copyright" rel="noopener noreferrer">© OpenStreetMap</a></p>
   {{- end }}
 </aside>
 {{- end -}}

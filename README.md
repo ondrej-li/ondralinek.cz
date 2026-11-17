@@ -37,7 +37,7 @@ The page is one template over four data files. No content files to keep in sync.
 | `data/apps.yaml` | App cards: name, platforms, status, links, app icon, screenshot |
 | `data/sites.yaml` | Site rows: domain, name, description, tech |
 | `data/oss.yaml` | Open-source cards |
-| `data/position.yaml` | Current position card: company, role, since, location, summary, focus |
+| `data/position.yaml` | Current position card: location, coordinates, note, updated |
 | `data/github.json` | Generated at build time by `tools/fetch-github.py` (gitignored) |
 | `i18n/en.toml`, `i18n/cs.toml` | Every piece of UI copy, both languages |
 | `content/en/_index.md`, `content/cs/_index.md` | Home pages (title only) |
@@ -65,16 +65,35 @@ omitted when the file is missing, so a build without network still works.
 ## Current position
 
 The About section has three columns — about, get in touch, current position — and
-the position card comes from `data/position.yaml` alone. The same file feeds the
-`whoami` line in the console and in ZX BASIC.
+the third one is where I am right now: a small map with a marker, the place name,
+the coordinates and an `updated` stamp. Everything comes from `data/position.yaml`,
+which also feeds the `whoami` line in the console and in ZX BASIC.
 
 Updating it is an agent task rather than a form: a plain YAML file in git, no
-service and no registration. When I forward or paste an email that states my new
-position, the agent edits `data/position.yaml` (both languages, `since` as an ISO
-date, `updated` bumped), commits with a `Position: ` prefix and pushes; the
-auto-deploy timer publishes it within five minutes. The rules live in
-[`AGENTS.md`](AGENTS.md) and [`.github/copilot-instructions.md`](.github/copilot-instructions.md)
-so any agent picking up the repository knows the drill.
+service and no registration. When I forward or paste an email that says where I
+am, the agent edits `data/position.yaml` only — `location` in both languages,
+`coords` and `note` if the email has them, `updated` bumped — commits with a
+`Position: ` prefix and pushes; the auto-deploy timer publishes it within five
+minutes. Nothing else on the page is touched.
+
+`location` is free text: a city, a region, a country or `Remote`. Coordinates are
+optional (`coords.lat` / `coords.lon`, decimal degrees, south and west negative)
+and draw the map.
+
+The map is real OpenStreetMap raster tiles, composed at build time by
+`layouts/partials/position-map.html`: it does the Web Mercator maths, pulls the
+handful of tiles that cover a window centred on the coordinates, and lays them
+out inside one inline SVG. No JavaScript, no iframe, no API key, no account —
+three image requests per page view, credited with a `© OpenStreetMap` link in the
+card. Because the tiles are light, only the tile images are filtered (invert +
+hue-rotate) to the site palette; the marker and the attribution sit outside that
+filter. `--map-filter` in `assets/css/main.css` is the single knob, so a light
+theme would set it to `none`. The server allows `tile.openstreetmap.org` for
+images in the CSP.
+
+The rules live in [`AGENTS.md`](AGENTS.md) and
+[`.github/copilot-instructions.md`](.github/copilot-instructions.md) so any agent
+picking up the repository knows the drill.
 
 ## Console and ZX Spectrum
 
@@ -113,7 +132,9 @@ assets/css/main.css        the whole design (dark, grid-based, no frameworks)
 assets/js/main.js          scroll reveal + mobile menu
 assets/js/terminal.js      shell commands, project links, self-destruct
 assets/js/contact.js       contact form → mailto
-layouts/partials/position-card.html  current position card
+layouts/partials/position-card.html  current position card (map + place)
+layouts/partials/position-map.html     OSM tile composition for the marker map
+layouts/partials/position-coords.html  "50.0755° N · 14.4378° E"
 data/position.yaml         current position source of truth
 AGENTS.md                  instructions for coding agents
 assets/js/zx.js            ZX Spectrum screen, palette and BASIC interpreter

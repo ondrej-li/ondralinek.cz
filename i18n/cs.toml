@@ -120,12 +120,12 @@ other = "Jsem forward deployed engineer z Česka. Pracuju tam, kde se potkává 
 other = "Zčásti product owner, zčásti development manager, zčásti inženýr. Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, priority, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce."
 [position_heading]
 other = "Současná pozice"
-[position_since]
-other = "od"
+[position_map]
+other = "mapa"
+[position_open_map]
+other = "Otevřít v mapě"
 [position_updated]
 other = "aktualizováno"
-[position_focus]
-other = "Co to znamená"
 [contact_heading]
 other = "Spojte se se mnou"
 [contact_email]
