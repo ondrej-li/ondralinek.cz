@@ -4,3 +4,5 @@ resources/_gen/
 .cache/
 data/github.json
 .DS_Store
+__pycache__/
+*.pyc

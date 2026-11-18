@@ -1,0 +1,41 @@
+name: CI
+
+# The VPS pulls master and renders the site, so this checks the same build on a
+# clean Linux runner before it gets that far.
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  hugo:
+    name: Build the site
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.146.0"
+
+      # The metadata fetch is best-effort by design: the site renders without it.
+      - name: Refresh the GitHub metadata
+        run: python3 tools/fetch-github.py --quiet || true
+
+      - name: Build
+        run: hugo --minify --cleanDestinationDir -d "$RUNNER_TEMP/public"
+
+      - name: Check the tools still parse
+        run: python3 -m compileall -q tools
