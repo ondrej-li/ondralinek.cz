@@ -25,8 +25,12 @@ make dev          # http://127.0.0.1:1313
 make build        # output in public/
 ```
 
-Hugo 0.146.0 is the version the server runs; install exactly that version
-(`brew install hugo` or a release tarball) if you want the build to match.
+Hugo 0.146.0 is the version the server runs, and the version CI pins. You only
+need it locally for a preview: a release tarball for your platform (or
+`apt`/`snap` on Linux, `brew install hugo` on macOS) at 0.146.0 keeps the output
+identical. Nothing depends on it being installed to get a change published —
+[`.github/workflows/ci.yml`](./.github/workflows/ci.yml) builds the same site on
+every push.
 
 ## Editing the content
 
