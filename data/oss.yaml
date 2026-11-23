@@ -1,5 +1,14 @@
 # Open-source utilities with their own card. Everything else is linked to GitHub.
 
+- repo: ondrej-li/agent-monitor
+  name: agent-monitor
+  lang: Python
+  accent: blue
+  shot: images/shots/agent-monitor-latest-light.webp
+  desc:
+    en: "A personal engineering secretary: twice-daily GitHub briefings, a durable history of attention points and ideas that never repeats itself, and a chat for every item."
+    cs: "Osobní inženýrský sekretář: briefing z GitHubu dvakrát denně, trvalá historie bodů pozornosti a nápadů, které se neopakují, a chat ke každé položce."
+
 - repo: ondrej-li/glutton
   name: glutton
   lang: Go

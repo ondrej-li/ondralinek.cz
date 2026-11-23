@@ -2,7 +2,14 @@
 {{- $repos := dict -}}
 {{- with site.Data.github }}{{ with .repos }}{{ $repos = . }}{{ end }}{{ end -}}
 {{- $meta := index $repos $item.repo -}}
+{{- $shot := false -}}
+{{- with $item.shot }}{{ $shot = resources.Get . }}{{ end -}}
 <article class="oss-card" data-accent="{{ $item.accent }}" data-reveal>
+  {{- with $shot }}
+  <div class="oss-shot">
+    <img src="{{ .RelPermalink }}" alt="" width="1180" height="840" loading="lazy" decoding="async">
+  </div>
+  {{- end }}
   <div class="oss-head">
     <span class="lang-dot" aria-hidden="true"></span>
     <h3>{{ $item.name }}</h3>
