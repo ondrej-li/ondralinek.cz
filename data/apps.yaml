@@ -5,6 +5,24 @@
 # GitHub metadata (stars, last push) is fetched at build time by
 # tools/fetch-github.py and merged in by the template.
 
+- id: profile-picker
+  name: Profile Picker
+  status: beta
+  platforms: [macOS]
+  repo: ondrej-li/ppicker
+  site: https://ppicker.ondralinek.cz/
+  store: ""
+  icon: images/apps/profile-picker.webp
+  shot: ""
+  accent: blue
+  tech: [Swift, SwiftUI, AppKit, MIT]
+  tagline:
+    en: "Every link in the right browser profile."
+    cs: "Každý odkaz ve správném profilu prohlížeče."
+  summary:
+    en: "Set Profile Picker as your default browser and links open in the profile your rules choose — Slack in Brave Work, GitHub in Chrome — or a picker appears next to the pointer. Chrome, Brave, Edge and Vivaldi profiles; rules by app, host or URL; no account, no analytics."
+    cs: "Nastavte Profile Picker jako výchozí prohlížeč a odkazy se otevřou v profilu, který určí vaše pravidla — Slack v Brave Work, GitHub v Chrome — nebo se vedle kurzoru objeví výběr. Profily Chrome, Brave, Edge a Vivaldi; pravidla podle aplikace, hostitele nebo URL; bez účtu a bez analytiky."
+
 - id: lora
   name: Lóra
   status: beta
