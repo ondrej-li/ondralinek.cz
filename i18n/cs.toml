@@ -56,7 +56,7 @@ other = "O mně"
 [hero_eyebrow]
 other = "Forward deployed engineer"
 [hero_eyebrow_extra]
-other = "produkt · dodávka · kód"
+other = "produkt · nasazení · kód"
 [hero_title_1]
 other = "Weby, aplikace a nástroje"
 [hero_title_2]
@@ -115,7 +115,7 @@ other = "04 — O mně"
 other = "O mně"
 
 [about_p1]
-other = "Jsem forward deployed engineer z Česka. Pracuju tam, kde se potkává produkt, dodávka a kód: s lidmi, kteří to potřebují, řeším co postavit, rozhoduju jak se to postaví a zůstávám u toho rukama — Go backendy, SQL, cloud a teď i LLM agenti — dokud to neběží v produkci."
+other = "Jsem forward deployed engineer z Česka. Pracuju tam, kde se potkává produkt, nasazení a kód: s lidmi, kteří to potřebují, řeším co postavit, rozhoduju jak se to postaví, ale jsem stále „hands on“ programátor — Go backendy, SQL, cloud a teď i LLM agenti — dokud to neběží v produkci."
 [about_p2]
 other = "Zčásti product owner, zčásti development manager, zčásti inženýr. Systémy beru od nápadu do provozu a zůstávám za ně odpovědný: architektura, priority, implementace, provoz a rozhodnutí mezi tím. V éře LLM a agentů je psaní kódu ta snadná část — vědět, co postavit, udržet to správné a stát si za tím, je ta práce."
 [position_heading]
@@ -135,7 +135,7 @@ other = "GitHub"
 [contact_cv]
 other = "CV a praxe"
 [contact_note]
-other = "Otevřený spolupráci, novým projektům a nápadům, které stojí za to postavit."
+other = "Těším se na spolupráci, nové projekty a nápady, které stojí za to postavit."
 [contact_subject]
 other = "Předmět"
 [contact_subject_placeholder]

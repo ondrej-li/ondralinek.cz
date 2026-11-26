@@ -32,7 +32,7 @@ disableKinds = ["taxonomy", "term", "RSS"]
     weight = 2
     title = "Ondra Linek — weby, aplikace a open source"
     [languages.cs.params]
-      description = "Forward deployed engineer Ondra Linek — produkt, dodávka a práce rukama v Go, SQL, cloudu a LLM agentech, plus nativní aplikace pro platformy Apple."
+      description = "Forward deployed engineer Ondra Linek — produkt, nasazení a kódování v Go, SQL, cloudu a LLM agentech, plus nativní aplikace pro platformy Apple."
 
 [markup]
   [markup.goldmark.renderer]
