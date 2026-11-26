@@ -7,7 +7,7 @@
   accent: green
   desc:
     en: "Field notes and essays on artificial intelligence, autonomous agents and the craft of working with machines — bilingual, with no cookies, trackers or third-party requests."
-    cs: "Poznámky z praxe a eseje o umělé inteligenci, autonomních agentech a práci s nimi — dvojjazyčně, bez cookies, trackerů a požadavků na cizí servery."
+    cs: "Poznámky z praxe a články o umělé inteligenci, autonomních agentech a práci s nimi — dvojjazyčně, bez cookies, trackerů a požadavků na cizí servery."
 
 - domain: kcna.ondralinek.cz
   url: https://kcna.ondralinek.cz/
@@ -52,4 +52,4 @@
   accent: lime
   desc:
     en: "The long version: forward deployed engineering — product ownership, delivery and hands-on work — with experience, services and skills. Plain HTML, versioned in git and deployed by a systemd timer."
-    cs: "Delší verze: forward deployed engineering — produkt, dodávka i práce rukama — s praxí, službami a dovednostmi. Čisté HTML, verzované v gitu a nasazované systemd timerem."
+    cs: "Delší verze: forward deployed engineering — produkt, nasazení i kódování — s praxí, službami a dovednostmi. Čisté HTML, verzované v gitu a nasazované systemd timerem."
