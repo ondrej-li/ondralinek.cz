@@ -1,5 +1,14 @@
 # Sites and services served from the VPS.
 
+- domain: ai.ondralinek.cz
+  url: https://ai.ondralinek.cz/
+  name: AI — Ondra Linek
+  tech: [Hugo, Static]
+  accent: green
+  desc:
+    en: "Field notes and essays on artificial intelligence, autonomous agents and the craft of working with machines — bilingual, with no cookies, trackers or third-party requests."
+    cs: "Poznámky z praxe a eseje o umělé inteligenci, autonomních agentech a práci s nimi — dvojjazyčně, bez cookies, trackerů a požadavků na cizí servery."
+
 - domain: kcna.ondralinek.cz
   url: https://kcna.ondralinek.cz/
   name: Novinky z KLDR
